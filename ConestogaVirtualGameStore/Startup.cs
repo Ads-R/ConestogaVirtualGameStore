@@ -36,6 +36,11 @@ namespace ConestogaVirtualGameStore
                 .AddEntityFrameworkStores<GameStoreContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
