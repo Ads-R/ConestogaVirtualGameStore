@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConestogaVirtualGameStore.Classes;
+using System;
 
 namespace ConestogaVirtualGameStore.Models
 {

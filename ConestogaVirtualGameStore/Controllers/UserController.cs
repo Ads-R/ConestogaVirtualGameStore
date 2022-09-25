@@ -1,4 +1,5 @@
-﻿using ConestogaVirtualGameStore.Models;
+﻿using ConestogaVirtualGameStore.Classes;
+using ConestogaVirtualGameStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,19 @@ namespace ConestogaVirtualGameStore.Controllers
 
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("ConfirmEmail", "User");
+                        var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                        var confirmationLink = Url.Action("ConfirmedEmail", "Email", new { token, email = user.Email }, Request.Scheme);
+                        EmailSender emailSender = new EmailSender();
+                        bool emailResponse = emailSender.SendEmail(user.Email, confirmationLink);
+                        
+                        if (emailResponse)
+                        {
+                            return RedirectToAction("ConfirmEmail", "User");
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("Send Email Failed");
+                        }
                     }
                     else
                     {
@@ -54,6 +67,11 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public IActionResult ConfirmEmail()
+        {
+            return View();
         }
 
         [AllowAnonymous]

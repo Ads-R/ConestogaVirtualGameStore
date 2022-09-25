@@ -1,4 +1,4 @@
-﻿namespace ConestogaVirtualGameStore.Models
+﻿namespace ConestogaVirtualGameStore.Classes
 {
     public enum Gender
     {
