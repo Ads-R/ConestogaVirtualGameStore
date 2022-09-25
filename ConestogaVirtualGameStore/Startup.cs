@@ -39,6 +39,9 @@ namespace ConestogaVirtualGameStore
             services.Configure<IdentityOptions>(options =>
             {
                 options.User.RequireUniqueEmail = true;
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             });
 
             services.AddControllersWithViews();

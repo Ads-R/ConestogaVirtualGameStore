@@ -86,10 +86,15 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
+                var result = await signInManager.PasswordSignInAsync(user.UserName, user.Password, false, true);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
+                }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "Your account has been locked due to consecutive " +
+                        "failed logins, Please wait 5 minutes before trying again");
                 }
                 ModelState.AddModelError("", "Invalid Login: ");
             }
