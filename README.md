@@ -1,5 +1,5 @@
 # ConestogaVirtualGameStore
-
+Dont forget to change the connection string in appsettings json
 ## To Generate/Update the Database in SQL Server
 ### Open package manager console and enter the following commands
 1. Add-Migration YourMigrationName -Context "GameStoreContext"
