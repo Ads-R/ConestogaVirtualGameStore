@@ -8,22 +8,30 @@ using System.Threading.Tasks;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IPasswordHasher<ApplicationUser> passwordHasher;
+        private readonly IPasswordValidator<ApplicationUser> passwordValidator;
 
-        public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager)
+        public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager, 
+            IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV)
         {
             userManager = uManager;
             signInManager = sManager;
+            passwordHasher = passwordHash;
+            passwordValidator = passwordV;
         }
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterModel user)
         {
             try
@@ -68,7 +76,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
+        [AllowAnonymous]
         public IActionResult ConfirmEmail()
         {
             return View();
@@ -105,6 +113,42 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(PasswordModel passwordModel)
+        {
+            ApplicationUser user = await userManager.GetUserAsync(HttpContext.User);
+            if(user != null)
+            {
+                var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
+                if (!resultValidate.Result.Succeeded)
+                {
+                    foreach (IdentityError err in resultValidate.Result.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
+                }
+                if (ModelState.IsValid)
+                {
+                    user.PasswordHash = passwordHasher.HashPassword(user, passwordModel.NewPassword);
+                    IdentityResult result = await userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    foreach (IdentityError err in result.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
+                }
+            }
+            return View();
         }
     }
 }
