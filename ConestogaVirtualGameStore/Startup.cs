@@ -1,5 +1,6 @@
 using ConestogaVirtualGameStore.Data;
 using ConestogaVirtualGameStore.Models;
+using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,15 @@ namespace ConestogaVirtualGameStore
                 options.Lockout.MaxFailedAccessAttempts = 3;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             });
+
+            services.AddDNTCaptcha(options =>
+            {
+                options.UseCookieStorageProvider(Microsoft.AspNetCore.Http.SameSiteMode.None)
+                .AbsoluteExpiration(minutes: 2)
+                .ShowThousandsSeparators(false)
+                .WithEncryptionKey("My Encrypted key");
+            });
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();

@@ -1,4 +1,8 @@
 ﻿@model RegisterModel
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 @{
 }
 <style>
@@ -36,6 +40,32 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
+    <div class="input-group mb-3">
+        <dnt-captcha asp-captcha-generator-max="999999"
+                     asp-captcha-generator-min="111111"
+                     asp-captcha-generator-language="English"
+                     asp-captcha-generator-display-mode="ShowDigits"
+                     asp-use-relative-urls="true"
+                     asp-placeholder="Enter Security code"
+                     asp-validation-error-message="Please enter the security code as a number."
+                     asp-font-name="Tahoma"
+                     asp-font-size="20"
+                     asp-fore-color="#333333"
+                     asp-back-color="#ccc"
+                     asp-text-box-class="text-box form-control"
+                     asp-text-box-template="<span class='input-group-prepend'><span class='form-group-text'></i></span></span>{0}"
+                     asp-validation-message-class="text-danger"
+                     asp-refresh-button-class="fas fa-redo btn-sm"
+                     asp-show-refresh-button="true" />
+    </div>
+
     <button type="submit" class="btn btn-primary">Register</button>
 
     </form>
+
+<script src="~/js/site.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>

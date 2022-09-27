@@ -1,5 +1,6 @@
 ﻿using ConestogaVirtualGameStore.Classes;
 using ConestogaVirtualGameStore.Models;
+using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,9 @@ namespace ConestogaVirtualGameStore.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateDNTCaptcha(ErrorMessage = "Please enter the captcha as a number.",
+            CaptchaGeneratorLanguage = Language.English,
+            CaptchaGeneratorDisplayMode = DisplayMode.ShowDigits)]
         public async Task<IActionResult> Register(RegisterModel user)
         {
             try
@@ -126,6 +130,8 @@ namespace ConestogaVirtualGameStore.Controllers
             ApplicationUser user = await userManager.GetUserAsync(HttpContext.User);
             if(user != null)
             {
+                //I used a passwordValidator here because Identity does not automatically apply the password policy
+                //when updating user, only on creating user
                 var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
                 if (!resultValidate.Result.Succeeded)
                 {
