@@ -20,6 +20,7 @@ namespace ConestogaVirtualGameStore.Models
                 .HasForeignKey<ProfileModel>(b => b.UserId).IsRequired();
         }
 
-        public DbSet<ProfileModel> ProfileModel { get; set; }
+        public DbSet<ProfileModel> Profiles { get; set; }
+        public DbSet<GameModel> Games { get; set; }
     }
 }
