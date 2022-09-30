@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 Migrations/
 GameCovers/
+ConestogaVirtualGameStore/appsettings.json
