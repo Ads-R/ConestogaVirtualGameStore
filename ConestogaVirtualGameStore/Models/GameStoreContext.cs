@@ -18,9 +18,21 @@ namespace ConestogaVirtualGameStore.Models
                 .HasOne<ProfileModel>(x => x.Profile)
                 .WithOne(a => a.ApplicationUser)
                 .HasForeignKey<ProfileModel>(b => b.UserId).IsRequired();
+            //User table 1 to 1 relationship with Preference Table
+            builder.Entity<ApplicationUser>()
+                .HasOne<PreferencesModel>(x => x.Preference)
+                .WithOne(a => a.ApplicationUser)
+                .HasForeignKey<PreferencesModel>(b => b.UserId).IsRequired();
+            //User table 1 to 1 relationship with Address Table
+            builder.Entity<ApplicationUser>()
+                .HasOne<AddressModel>(x => x.Address)
+                .WithOne(a => a.ApplicationUser)
+                .HasForeignKey<AddressModel>(b => b.UserId).IsRequired();
         }
 
         public DbSet<ProfileModel> Profiles { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<PreferencesModel> Preferences { get; set; }
+        public DbSet<AddressModel> Address { get; set; }
     }
 }
