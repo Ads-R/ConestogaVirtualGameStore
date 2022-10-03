@@ -58,6 +58,15 @@ namespace ConestogaVirtualGameStore.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,YearReleased," +
             "RetailPrice,Description,ImageFile")] GameModel gameModel)
         {
+            if (gameModel.ImageFile == null)
+            {
+                ModelState.AddModelError("ImageFile", "Cover Image is required when adding a new game");
+            }
+            bool IsValidDate = IsDateValid(gameModel.YearReleased);
+            if (!IsDateValid(gameModel.YearReleased))
+            {
+                ModelState.AddModelError("YearReleased", "Date cannot be in the future");
+            }
             if (ModelState.IsValid)
             {
                 string fileName = GenerateUniqueGameName(gameModel.ImageFile);
@@ -199,6 +208,17 @@ namespace ConestogaVirtualGameStore.Controllers
             if (System.IO.File.Exists(imagePath))
             {
                 System.IO.File.Delete(imagePath);
+            }
+        }
+        public bool IsDateValid(int dob)
+        {
+            if (dob > DateTime.Now.Year)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }

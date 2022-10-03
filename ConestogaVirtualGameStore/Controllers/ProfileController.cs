@@ -49,8 +49,7 @@ namespace ConestogaVirtualGameStore.Controllers
             }
             if (profile.DateOfBirth != null)
             {
-                bool valid = IsDateValid((DateTime)profile.DateOfBirth);
-                if (!valid)
+                if (!IsDateValid((DateTime)profile.DateOfBirth))
                 {
                     ModelState.AddModelError("DateOfBirth","Date cannot be in the future");
                 }
@@ -64,8 +63,6 @@ namespace ConestogaVirtualGameStore.Controllers
             return View("UpdateProfile", profile);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
         public bool IsDateValid(DateTime dob)
         {
             if(dob > DateTime.Now)
