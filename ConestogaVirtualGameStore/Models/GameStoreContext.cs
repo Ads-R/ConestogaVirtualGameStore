@@ -28,6 +28,11 @@ namespace ConestogaVirtualGameStore.Models
                 .HasOne<AddressModel>(x => x.Address)
                 .WithOne(a => a.ApplicationUser)
                 .HasForeignKey<AddressModel>(b => b.UserId).IsRequired();
+
+            builder.Entity<ProfileModel>()
+                .Property(x => x.Gender)
+                .HasConversion<string>()
+                .HasMaxLength(20);
         }
 
         public DbSet<ProfileModel> Profiles { get; set; }
