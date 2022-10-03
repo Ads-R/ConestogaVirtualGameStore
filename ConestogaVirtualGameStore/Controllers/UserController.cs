@@ -66,7 +66,17 @@ namespace ConestogaVirtualGameStore.Controllers
                                 UserId = appUser.Id,
                                 Gender = Gender.None
                             };
+                            PreferencesModel preference = new PreferencesModel
+                            {
+                                UserId = appUser.Id,
+                            };
+                            AddressModel address = new AddressModel
+                            {
+                                UserId = appUser.Id,
+                            };
                             _context.Add(profile);
+                            _context.Add(preference);
+                            _context.Add(address);
                             await _context.SaveChangesAsync();
                             return RedirectToAction("ConfirmEmail", "User");
                         }
