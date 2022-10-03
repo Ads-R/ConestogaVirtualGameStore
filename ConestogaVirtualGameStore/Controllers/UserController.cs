@@ -4,6 +4,7 @@ using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -16,14 +17,16 @@ namespace ConestogaVirtualGameStore.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IPasswordHasher<ApplicationUser> passwordHasher;
         private readonly IPasswordValidator<ApplicationUser> passwordValidator;
+        private readonly GameStoreContext _context;
 
         public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager, 
-            IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV)
+            IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV, GameStoreContext context)
         {
             userManager = uManager;
             signInManager = sManager;
             passwordHasher = passwordHash;
             passwordValidator = passwordV;
+            _context = context;
         }
         [AllowAnonymous]
         public IActionResult Register()
@@ -58,6 +61,13 @@ namespace ConestogaVirtualGameStore.Controllers
                         
                         if (emailResponse)
                         {
+                            ProfileModel profile = new ProfileModel
+                            {
+                                UserId = appUser.Id,
+                                Gender = Gender.None
+                            };
+                            _context.Add(profile);
+                            await _context.SaveChangesAsync();
                             return RedirectToAction("ConfirmEmail", "User");
                         }
                         else
@@ -80,6 +90,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
         [AllowAnonymous]
         public IActionResult ConfirmEmail()
         {

@@ -1,4 +1,6 @@
 ﻿using ConestogaVirtualGameStore.Classes;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 
 namespace ConestogaVirtualGameStore.Models
@@ -11,6 +13,7 @@ namespace ConestogaVirtualGameStore.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public bool IsSubscribed { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
     }

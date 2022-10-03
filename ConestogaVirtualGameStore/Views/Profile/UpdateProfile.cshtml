@@ -1,0 +1,47 @@
+﻿@using ConestogaVirtualGameStore.Classes
+@model ProfileModel
+@{
+}
+<h1>Profile Page</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="UpdateProfile" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UserId" />
+
+
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Gender"></label>
+        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfBirth"></label>
+        <input asp-for="DateOfBirth" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="IsSubscribed"></label>
+        <input asp-for="IsSubscribed" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<br />
+<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
