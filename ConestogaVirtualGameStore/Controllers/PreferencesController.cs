@@ -42,11 +42,25 @@ namespace ConestogaVirtualGameStore.Controllers
         public async Task<IActionResult> UpdatePreference([Bind("PreferencesModelId, UserId, Platform, Category")] PreferenceViewModel preference)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
-            var id = _context.Preferences.Where(a => a.UserId == user.Id).AsNoTracking().FirstOrDefault();
-            if(user.Id != preference.UserId && id.PreferencesModelId != preference.PreferencesModelId)
+            PreferencesModel pref = await _context.Preferences.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+            if (pref.UserId != preference.UserId && pref.PreferencesModelId != preference.PreferencesModelId)
             {
                 return NotFound();
             }
+            if (ModelState.IsValid)
+            {
+
+                pref.Category =  preference.Category != null ? preference.Category.Join(",") : null;
+                pref.Platform = preference.Platform != null ? preference.Platform.Join(",") : null;
+                _context.Update(pref);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            /* var id = _context.Preferences.Where(a => a.UserId == user.Id).AsNoTracking().FirstOrDefault();
+            if(user.Id != preference.UserId && id.PreferencesModelId != preference.PreferencesModelId)
+            {
+                return NotFound();
+            } 
             if (ModelState.IsValid)
             {
                 PreferencesModel pref = new PreferencesModel
@@ -55,11 +69,11 @@ namespace ConestogaVirtualGameStore.Controllers
                     UserId = preference.UserId,
                     Category = preference.Category != null ? preference.Category.Join(",") : null,
                     Platform = preference.Platform != null ? preference.Platform.Join(",") : null
-                };
+                }; 
                 _context.Update(pref);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
-            }
+                return RedirectToAction("Index", "Home"); 
+            } */
             return View("UpdatePreference", preference);
         }
     }
