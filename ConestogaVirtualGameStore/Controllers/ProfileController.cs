@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;

@@ -1,0 +1,34 @@
+﻿@using ConestogaVirtualGameStore.Classes
+@using ConestogaVirtualGameStore.Models.ViewModels
+@model PreferenceViewModel
+@{
+}
+<h1>Preference Page</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="UpdatePreference" method="post">
+    <input type="hidden" asp-for="PreferencesModelId" />
+    <input type="hidden" asp-for="UserId" />
+
+    <label asp-for="Platform"></label>
+        @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
+        {
+        <input name="Platform" type="checkbox" value="@Enum.GetName(typeof(Platforms), x)" @(Model.Platform == null ? "": Model.Platform.Contains(Enum.GetName(typeof(Platforms), x)) ? "checked='checked'" : "") /> @Enum.GetName(typeof(Platforms), x) <br />
+        }
+
+    <label asp-for="Category"></label>
+    @for (int x = 0; x < Enum.GetNames(typeof(Genre)).Length; x++){
+        <input name="Category" type="checkbox" value="@Enum.GetName(typeof(Genre), x)" @(Model.Category == null ? "": (Model.Category.Contains(Enum.GetName(typeof(Genre), x))) ? "checked='checked'" : "")) /> @Enum.GetName(typeof(Genre), x) <br />
+    }
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<br />
+<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
