@@ -21,9 +21,15 @@ namespace ConestogaVirtualGameStore.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Games.ToListAsync());
+            var game = from g in _context.Games select g;
+            if (!String.IsNullOrEmpty(search))
+            {
+                //Excalamation point is a null forgiving operator for the compiler
+                game = game.Where(a => a.Title!.Contains(search));
+            }
+            return View(await game.ToListAsync());
         }
 
         public async Task<IActionResult> GameDetails(int? id)
