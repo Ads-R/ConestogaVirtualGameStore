@@ -1,4 +1,5 @@
 ﻿using ConestogaVirtualGameStore.Models;
+using ConestogaVirtualGameStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,15 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
             var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
-            if (profile != null)
+            var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
+            if (profile != null && preferences != null)
             {
-                return View(profile);
+                ProfilePreferenceViewModel profPref = new ProfilePreferenceViewModel
+                {
+                    Profile = profile,
+                    Preferences = preferences
+                };
+                return View(profPref);
             }
             return RedirectToAction("Index", "Profile");
         }

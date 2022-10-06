@@ -54,7 +54,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 pref.Platform = preference.Platform != null ? preference.Platform.Join(",") : null;
                 _context.Update(pref);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Profile");
             }
             /* var id = _context.Preferences.Where(a => a.UserId == user.Id).AsNoTracking().FirstOrDefault();
             if(user.Id != preference.UserId && id.PreferencesModelId != preference.PreferencesModelId)
