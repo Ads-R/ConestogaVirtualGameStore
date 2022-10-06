@@ -27,16 +27,18 @@ namespace ConestogaVirtualGameStore.Controllers
             ApplicationUser user = await userManager.GetUserAsync(User);
             var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
             var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
+            var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
             if (profile != null && preferences != null)
             {
-                ProfilePreferenceViewModel profPref = new ProfilePreferenceViewModel
+                ProfilePreferenceAddressViewModel profPref = new ProfilePreferenceAddressViewModel
                 {
                     Profile = profile,
-                    Preferences = preferences
+                    Preferences = preferences,
+                    Address = address
                 };
                 return View(profPref);
             }
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> UpdateProfile()
@@ -47,7 +49,7 @@ namespace ConestogaVirtualGameStore.Controllers
               {
                   return View(profile);
               }
-              return RedirectToAction("Index", "Profile");
+              return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -128,6 +130,35 @@ namespace ConestogaVirtualGameStore.Controllers
                 return RedirectToAction("Index", "Home"); 
             } */
             return View("UpdatePreference", preference);
+        }
+
+        public async Task<IActionResult> UpdateAddress()
+        {
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            var address = await _context.Address.FirstOrDefaultAsync(a => a.UserId == user.Id);
+            if (address != null)
+            {
+                return View(address);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress")] AddressModel address)
+        {
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            AddressModel addr = await _context.Address.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+            if (addr.UserId != address.UserId && addr.AddressModelId != address.AddressModelId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Update(address);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Profile");
+            }
+            return View("UpdateAddress", address);
         }
 
         public bool IsDateValid(DateTime dob)

@@ -1,0 +1,34 @@
+﻿@model AddressModel
+@{
+}
+<h1>Update Address</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="UpdateAddress" method="post">
+    <input type="hidden" asp-for="AddressModelId" />
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group">
+        <label asp-for="MailingAddress"></label>
+        <input asp-for="MailingAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ShippingAddress"></label>
+        <input asp-for="ShippingAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsSame"></label>
+        <input asp-for="IsSame" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+<br />
+<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary">Back</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

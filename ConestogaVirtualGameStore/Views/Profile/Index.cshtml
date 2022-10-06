@@ -1,5 +1,5 @@
 ﻿@using ConestogaVirtualGameStore.Models.ViewModels
-@model ProfilePreferenceViewModel
+@model ProfilePreferenceAddressViewModel
 
 <h1>Profile Page</h1>
 
@@ -64,6 +64,29 @@
 </div>
 <div>
     <a asp-action="UpdatePreference" class="btn btn-primary">Update Preferences</a>
+    <br /><br />
+</div>
+
+<div>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.MailingAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.MailingAddress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address.ShippingAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.ShippingAddress)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="UpdateAddress" class="btn btn-primary">Update Address</a>
     <br /><br />
 </div>
 
