@@ -11,13 +11,14 @@
     <input type="hidden" asp-for="UserId" />
 
     <label asp-for="Platform"></label>
-        @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
-        {
+    @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
+    {
         <input name="Platform" type="checkbox" value="@Enum.GetName(typeof(Platforms), x)" @(Model.Platform == null ? "": Model.Platform.Contains(Enum.GetName(typeof(Platforms), x)) ? "checked='checked'" : "") /> @Enum.GetName(typeof(Platforms), x) <br />
-        }
+    }
 
     <label asp-for="Category"></label>
-    @for (int x = 0; x < Enum.GetNames(typeof(Genre)).Length; x++){
+    @for (int x = 0; x < Enum.GetNames(typeof(Genre)).Length; x++)
+    {
         <input name="Category" type="checkbox" value="@Enum.GetName(typeof(Genre), x)" @(Model.Category == null ? "": (Model.Category.Contains(Enum.GetName(typeof(Genre), x))) ? "checked='checked'" : "")) /> @Enum.GetName(typeof(Genre), x) <br />
     }
 
