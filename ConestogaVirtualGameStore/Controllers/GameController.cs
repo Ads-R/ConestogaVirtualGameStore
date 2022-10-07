@@ -9,9 +9,11 @@ using ConestogaVirtualGameStore.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GameController : Controller
     {
         private readonly GameStoreContext _context;
