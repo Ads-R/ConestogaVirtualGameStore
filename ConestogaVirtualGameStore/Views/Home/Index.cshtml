@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+﻿@using ConestogaVirtualGameStore.Models.ViewModels
+@model GameSearchViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -12,12 +13,15 @@
 <form asp-action="Index" asp-controller="Home" method="GET">
     <p>
         Search by Title: <input type="text" name="search" />
+        Category: <select asp-for="GameCategory" asp-items="Model.Categories">
+            <option value="">All</option>
+        </select>
         <input type="submit" value="Search" />
     </p>
 </form>
 
 <div class="row">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Games)
         {
                 <div class="column">
                 <div class="card" style="width:150px">

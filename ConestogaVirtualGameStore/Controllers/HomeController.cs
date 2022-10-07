@@ -1,5 +1,6 @@
 ﻿using ConestogaVirtualGameStore.Classes;
 using ConestogaVirtualGameStore.Models;
+using ConestogaVirtualGameStore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,25 @@ namespace ConestogaVirtualGameStore.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, string gameCategory)
         {
-            //var category = new SelectList(Enum.GetNames(typeof(Genre)));
+            var category = new SelectList(Enum.GetNames(typeof(Genre)));
             var game = from g in _context.Games select g;
             if (!String.IsNullOrEmpty(search))
             {
                 //Excalamation point is a null forgiving operator for the compiler
                 game = game.Where(a => a.Title!.Contains(search));
             }
-            return View(await game.ToListAsync());
+            if (!String.IsNullOrEmpty(gameCategory))
+            {
+                game = game.Where(b => b.Category == Enum.Parse<Genre>(gameCategory));
+            }
+            var gameVM = new GameSearchViewModel
+            {
+                Categories = category,
+                Games = await game.ToListAsync()
+            };
+            return View(gameVM);
         }
 
         public async Task<IActionResult> GameDetails(int? id)
