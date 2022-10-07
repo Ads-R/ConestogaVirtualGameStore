@@ -33,6 +33,16 @@ namespace ConestogaVirtualGameStore.Models
                 .Property(x => x.Gender)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+
+            builder.Entity<GameModel>()
+                .Property(x => x.Category)
+                .HasConversion<string>()
+                .HasMaxLength(20);
+
+            builder.Entity<GameModel>()
+                .Property(x => x.Platform)
+                .HasConversion<string>()
+                .HasMaxLength(20);
         }
 
         public DbSet<ProfileModel> Profiles { get; set; }

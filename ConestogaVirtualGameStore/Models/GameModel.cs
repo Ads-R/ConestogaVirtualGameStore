@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ConestogaVirtualGameStore.Classes;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,8 @@ namespace ConestogaVirtualGameStore.Models
         [Required]
         public double RetailPrice { get; set; }
         public string Description { get; set; }
+        public Genre Category { get; set; }
+        public Platforms Platform { get; set; }
         public string ImageName { get; set; }
         [NotMapped]
         [DisplayName("Upload Game Image")]

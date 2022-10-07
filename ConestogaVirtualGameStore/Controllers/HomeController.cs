@@ -1,5 +1,7 @@
-﻿using ConestogaVirtualGameStore.Models;
+﻿using ConestogaVirtualGameStore.Classes;
+using ConestogaVirtualGameStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,6 +25,7 @@ namespace ConestogaVirtualGameStore.Controllers
 
         public async Task<IActionResult> Index(string search)
         {
+            //var category = new SelectList(Enum.GetNames(typeof(Genre)));
             var game = from g in _context.Games select g;
             if (!String.IsNullOrEmpty(search))
             {

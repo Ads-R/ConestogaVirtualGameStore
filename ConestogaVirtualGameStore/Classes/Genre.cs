@@ -2,6 +2,6 @@
 {
     public enum Genre
     {
-        None, RPG, Strategy, Simulation, FPS, Fantasy, Adventure, Horror, Action, Puzzle, Sandbox
+         RPG, Strategy, Simulation, FPS, Fantasy, Adventure, Horror, Action, Puzzle, Sandbox
     }
 }

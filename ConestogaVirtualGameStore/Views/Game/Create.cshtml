@@ -1,4 +1,5 @@
-﻿@model ConestogaVirtualGameStore.Models.GameModel
+﻿@using ConestogaVirtualGameStore.Classes
+@model ConestogaVirtualGameStore.Models.GameModel
 
 @{
     ViewData["Title"] = "Create";
@@ -25,6 +26,14 @@
                 <label asp-for="RetailPrice" class="control-label"></label>
                 <input asp-for="RetailPrice" class="form-control" />
                 <span asp-validation-for="RetailPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Genre>()"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Platform"></label>
+                <select asp-for="Platform" class="form-control" asp-items="Html.GetEnumSelectList<Platforms>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>

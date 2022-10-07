@@ -56,7 +56,7 @@ namespace ConestogaVirtualGameStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,YearReleased," +
-            "RetailPrice,Description,ImageFile")] GameModel gameModel)
+            "RetailPrice,Description,Category,Platform,ImageFile")] GameModel gameModel)
         {
             if (gameModel.ImageFile == null)
             {
@@ -104,7 +104,7 @@ namespace ConestogaVirtualGameStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,YearReleased,RetailPrice," +
-            "Description,ImageName,ImageFile")] GameModel gameModel)
+            "Description,ImageName,Category,Platform,ImageFile")] GameModel gameModel)
         {
             if (id != gameModel.Id)
             {
