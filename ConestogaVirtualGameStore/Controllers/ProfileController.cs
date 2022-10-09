@@ -154,7 +154,9 @@ namespace ConestogaVirtualGameStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                _context.Update(address);
+                addr.MailingAddress = address.MailingAddress;
+                addr.ShippingAddress = address.ShippingAddress;
+                _context.Update(addr);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile");
             }
