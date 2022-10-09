@@ -144,7 +144,7 @@ namespace ConestogaVirtualGameStore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress")] AddressModel address)
+        public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress, IsSame")] AddressModel address)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
             AddressModel addr = await _context.Address.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
@@ -155,7 +155,8 @@ namespace ConestogaVirtualGameStore.Controllers
             if (ModelState.IsValid)
             {
                 addr.MailingAddress = address.MailingAddress;
-                addr.ShippingAddress = address.ShippingAddress;
+                addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
+                addr.IsSame = address.IsSame;
                 _context.Update(addr);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile");

@@ -1,5 +1,6 @@
 ﻿@model AddressModel
 @{
+    //Layout = "_Layout";
 }
 <h1>Update Address</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -18,7 +19,7 @@
     </div>
     <div class="form-group">
         <label asp-for="IsSame"></label>
-        <input asp-for="IsSame" class="form-control" />
+        <input asp-for="IsSame" class="form-control" onchange="chkLock()"/>
     </div>
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -31,4 +32,23 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        window.onload = assignChk;
+        function assignChk(){
+            var chkStatus = document.getElementById("IsSame");
+            var shipField = document.getElementById("ShippingAddress");
+            if(chkStatus.checked == true){
+                shipField.disabled = true;
+            }
+            else{
+                shipField.disabled = false;
+            }
+        }
+    </script>
+    <script>
+        function chkLock() {
+            var shipField = document.getElementById("ShippingAddress");
+            shipField.disabled = !shipField.disabled;
+        }
+    </script>
     }
