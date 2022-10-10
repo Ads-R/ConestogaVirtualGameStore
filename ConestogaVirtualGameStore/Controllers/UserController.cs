@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ConestogaVirtualGameStore.Controllers
@@ -176,6 +178,91 @@ namespace ConestogaVirtualGameStore.Controllers
                 }
             }
             return View();
+        }
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            ApplicationUser user = await _context.Users.Where(a => a.Email == email).FirstOrDefaultAsync();
+            if(user != null)
+            {
+                string newPassword = PasswordGenerator(12);
+                user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
+                IdentityResult result = await userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    EmailSender emailSender = new EmailSender();
+                    bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
+                    if (!emailResponse)
+                    {
+                        ModelState.AddModelError("", "An error occured, please try resetting your password again later");
+                    }
+                    TempData["ResetSuccess"] = "Password has been reset successfully. Check your email for your new password";
+                    return View();
+                }
+                foreach (IdentityError err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
+
+            }
+            ModelState.AddModelError("", "Email not found");
+            return View();
+        }
+
+        public string PasswordGenerator(int passwordLength)
+        {
+            bool HasLowerCase = false;
+            bool HasUpperCase = false;
+            bool HasDigit = false;
+            bool HasSpecialCharacter = false;
+            Random random = new Random();
+            StringBuilder newPasssword = new StringBuilder();
+            while(passwordLength > newPasssword.Length)
+            {
+                char character = (char)random.Next(32, 126);
+                newPasssword.Append(character);
+                if (char.IsLower(character))
+                {
+                    HasLowerCase = true;
+                }
+                else if (char.IsUpper(character))
+                {
+                    HasUpperCase = true;
+                }
+                else if (char.IsDigit(character))
+                {
+                    HasDigit = true;
+                }
+                else if (!char.IsLetterOrDigit(character))
+                {
+                    HasSpecialCharacter = true;
+                }
+            }
+
+            if (!HasLowerCase)
+            {
+                newPasssword.Append((char)random.Next(97,123));
+            }
+            if (!HasUpperCase)
+            {
+                newPasssword.Append((char)random.Next(65, 91));
+            }
+            if (!HasDigit)
+            {
+                newPasssword.Append((char)random.Next(48, 58));
+            }
+            if (!HasSpecialCharacter)
+            {
+                newPasssword.Append((char)random.Next(33, 48));
+            }
+            return newPasssword.ToString();
         }
     }
 }
