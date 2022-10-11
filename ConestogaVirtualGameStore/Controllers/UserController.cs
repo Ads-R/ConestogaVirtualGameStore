@@ -1,5 +1,6 @@
 ﻿using ConestogaVirtualGameStore.Classes;
 using ConestogaVirtualGameStore.Models;
+using ConestogaVirtualGameStore.Models.ViewModels;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -214,34 +215,34 @@ namespace ConestogaVirtualGameStore.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel emailAccount)
         {
             try
             {
-                ApplicationUser user = await _context.Users.Where(a => a.Email == email).FirstOrDefaultAsync();
-                if (user != null)
+                if (ModelState.IsValid)
                 {
-                    string newPassword = PasswordGenerator(12);
-                    user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
-                    IdentityResult result = await userManager.UpdateAsync(user);
-                    if (result.Succeeded)
+                    ApplicationUser user = await _context.Users.Where(a => a.Email == emailAccount.Email).FirstOrDefaultAsync();
+                    if (user != null)
                     {
-                        EmailSender emailSender = new EmailSender();
-                        bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
-                        if (!emailResponse)
+                        string newPassword = PasswordGenerator(12);
+                        user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
+                        IdentityResult result = await userManager.UpdateAsync(user);
+                        if (result.Succeeded)
                         {
-                            ModelState.AddModelError("", "An error occured, please try resetting your password again later");
+                            EmailSender emailSender = new EmailSender();
+                            bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
+                            if (!emailResponse)
+                            {
+                                ModelState.AddModelError("", "An error occured, please try resetting your password again later");
+                            }
+                            TempData["ResetSuccess"] = "Password has been reset successfully. Check your email for your new password";
+                            return View();
                         }
-                        TempData["ResetSuccess"] = "Password has been reset successfully. Check your email for your new password";
+                        ModelState.AddModelError("", "Password reset failed, please try again later");
                         return View();
                     }
-                    foreach (IdentityError err in result.Errors)
-                    {
-                        ModelState.AddModelError("", err.Description);
-                    }
-
+                    ModelState.AddModelError("", "Email not found");
                 }
-                ModelState.AddModelError("", "Email not found");
             }
             catch (Exception x)
             {
