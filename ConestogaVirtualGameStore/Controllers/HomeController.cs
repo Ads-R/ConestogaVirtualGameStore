@@ -1,6 +1,7 @@
 ﻿using ConestogaVirtualGameStore.Classes;
 using ConestogaVirtualGameStore.Models;
 using ConestogaVirtualGameStore.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -24,6 +26,7 @@ namespace ConestogaVirtualGameStore.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string search, string gameCategory)
         {
             var category = new SelectList(Enum.GetNames(typeof(Genre)));
@@ -44,7 +47,7 @@ namespace ConestogaVirtualGameStore.Controllers
             };
             return View(gameVM);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> GameDetails(int? id)
         {
             if (id == null)

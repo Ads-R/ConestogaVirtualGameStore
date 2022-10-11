@@ -45,6 +45,8 @@ namespace ConestogaVirtualGameStore
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             });
 
+            services.ConfigureApplicationCookie(option => option.LoginPath = "/User/Login");
+
             services.AddDNTCaptcha(options =>
             {
                 options.UseCookieStorageProvider(Microsoft.AspNetCore.Http.SameSiteMode.None)

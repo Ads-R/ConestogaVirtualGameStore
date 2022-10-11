@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,9 +44,9 @@ namespace ConestogaVirtualGameStore.Controllers
             CaptchaGeneratorDisplayMode = DisplayMode.ShowDigits)]
         public async Task<IActionResult> Register(RegisterModel user)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
                     ApplicationUser appUser = new ApplicationUser
                     {
@@ -53,14 +54,14 @@ namespace ConestogaVirtualGameStore.Controllers
                         Email = user.Email,
                     };
                     IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
-
+                    //throw new Exception("Testing the exception");
                     if (result.Succeeded)
                     {
                         var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
                         var confirmationLink = Url.Action("ConfirmedEmail", "Email", new { token, email = user.Email }, Request.Scheme);
                         EmailSender emailSender = new EmailSender();
                         bool emailResponse = emailSender.SendEmail(user.Email, confirmationLink);
-                        
+
                         if (emailResponse)
                         {
                             ProfileModel profile = new ProfileModel
@@ -95,12 +96,14 @@ namespace ConestogaVirtualGameStore.Controllers
                         }
                     }
                 }
-                return View(user);
+                catch (Exception x)
+                {
+                    TempData["ExceptionMessage"] = "An unexpected error has occurred while registering. Please try again later. " +x.GetBaseException().Message;
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            catch (Exception x)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+
+            return View(user);
         }
 
         [AllowAnonymous]
@@ -121,24 +124,40 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(user.UserName, user.Password, false, true);
-                if (result.Succeeded)
+                try
                 {
+                    var result = await signInManager.PasswordSignInAsync(user.UserName, user.Password, false, true);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        ModelState.AddModelError("", "Your account has been locked due to consecutive " +
+                            "failed logins, Please wait 5 minutes before trying again");
+                    }
+                    ModelState.AddModelError("", "Invalid Login: ");
+                }
+                catch (Exception x)
+                {
+                    TempData["ExceptionMessage"] = "An unexpected error has occurred while Logging in. Please try again later. " + x.GetBaseException().Message;
                     return RedirectToAction("Index", "Home");
                 }
-                if (result.IsLockedOut)
-                {
-                    ModelState.AddModelError("", "Your account has been locked due to consecutive " +
-                        "failed logins, Please wait 5 minutes before trying again");
-                }
-                ModelState.AddModelError("", "Invalid Login: ");
             }
             return View(user);
         }
 
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            try
+            {
+                await signInManager.SignOutAsync();
+            }
+            catch(Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while Logging out. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("Index", "Home");
         }
 
@@ -150,32 +169,40 @@ namespace ConestogaVirtualGameStore.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(PasswordModel passwordModel)
         {
-            ApplicationUser user = await userManager.GetUserAsync(HttpContext.User);
-            if(user != null)
+            try
             {
-                //I used a passwordValidator here because Identity does not automatically apply the password policy
-                //when updating user, only on creating user
-                var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
-                if (!resultValidate.Result.Succeeded)
+                ApplicationUser user = await userManager.GetUserAsync(HttpContext.User);
+                if (user != null)
                 {
-                    foreach (IdentityError err in resultValidate.Result.Errors)
+                    //I used a passwordValidator here because Identity does not automatically apply the password policy
+                    //when updating user, only on creating user
+                    var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
+                    if (!resultValidate.Result.Succeeded)
                     {
-                        ModelState.AddModelError("", err.Description);
+                        foreach (IdentityError err in resultValidate.Result.Errors)
+                        {
+                            ModelState.AddModelError("", err.Description);
+                        }
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        user.PasswordHash = passwordHasher.HashPassword(user, passwordModel.NewPassword);
+                        IdentityResult result = await userManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        foreach (IdentityError err in result.Errors)
+                        {
+                            ModelState.AddModelError("", err.Description);
+                        }
                     }
                 }
-                if (ModelState.IsValid)
-                {
-                    user.PasswordHash = passwordHasher.HashPassword(user, passwordModel.NewPassword);
-                    IdentityResult result = await userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    foreach (IdentityError err in result.Errors)
-                    {
-                        ModelState.AddModelError("", err.Description);
-                    }
-                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while Changing Password. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
@@ -189,30 +216,38 @@ namespace ConestogaVirtualGameStore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            ApplicationUser user = await _context.Users.Where(a => a.Email == email).FirstOrDefaultAsync();
-            if(user != null)
+            try
             {
-                string newPassword = PasswordGenerator(12);
-                user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
-                IdentityResult result = await userManager.UpdateAsync(user);
-                if (result.Succeeded)
+                ApplicationUser user = await _context.Users.Where(a => a.Email == email).FirstOrDefaultAsync();
+                if (user != null)
                 {
-                    EmailSender emailSender = new EmailSender();
-                    bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
-                    if (!emailResponse)
+                    string newPassword = PasswordGenerator(12);
+                    user.PasswordHash = passwordHasher.HashPassword(user, newPassword);
+                    IdentityResult result = await userManager.UpdateAsync(user);
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError("", "An error occured, please try resetting your password again later");
+                        EmailSender emailSender = new EmailSender();
+                        bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
+                        if (!emailResponse)
+                        {
+                            ModelState.AddModelError("", "An error occured, please try resetting your password again later");
+                        }
+                        TempData["ResetSuccess"] = "Password has been reset successfully. Check your email for your new password";
+                        return View();
                     }
-                    TempData["ResetSuccess"] = "Password has been reset successfully. Check your email for your new password";
-                    return View();
-                }
-                foreach (IdentityError err in result.Errors)
-                {
-                    ModelState.AddModelError("", err.Description);
-                }
+                    foreach (IdentityError err in result.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
 
+                }
+                ModelState.AddModelError("", "Email not found");
             }
-            ModelState.AddModelError("", "Email not found");
+            catch(Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while Resetting Password. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -224,45 +259,52 @@ namespace ConestogaVirtualGameStore.Controllers
             bool HasSpecialCharacter = false;
             Random random = new Random();
             StringBuilder newPasssword = new StringBuilder();
-            while(passwordLength > newPasssword.Length)
+            try
             {
-                char character = (char)random.Next(32, 126);
-                newPasssword.Append(character);
-                if (char.IsLower(character))
+                while (passwordLength > newPasssword.Length)
                 {
-                    HasLowerCase = true;
+                    char character = (char)random.Next(32, 126);
+                    newPasssword.Append(character);
+                    if (char.IsLower(character))
+                    {
+                        HasLowerCase = true;
+                    }
+                    else if (char.IsUpper(character))
+                    {
+                        HasUpperCase = true;
+                    }
+                    else if (char.IsDigit(character))
+                    {
+                        HasDigit = true;
+                    }
+                    else if (!char.IsLetterOrDigit(character))
+                    {
+                        HasSpecialCharacter = true;
+                    }
                 }
-                else if (char.IsUpper(character))
-                {
-                    HasUpperCase = true;
-                }
-                else if (char.IsDigit(character))
-                {
-                    HasDigit = true;
-                }
-                else if (!char.IsLetterOrDigit(character))
-                {
-                    HasSpecialCharacter = true;
-                }
-            }
 
-            if (!HasLowerCase)
-            {
-                newPasssword.Append((char)random.Next(97,123));
+                if (!HasLowerCase)
+                {
+                    newPasssword.Append((char)random.Next(97, 123));
+                }
+                if (!HasUpperCase)
+                {
+                    newPasssword.Append((char)random.Next(65, 91));
+                }
+                if (!HasDigit)
+                {
+                    newPasssword.Append((char)random.Next(48, 58));
+                }
+                if (!HasSpecialCharacter)
+                {
+                    newPasssword.Append((char)random.Next(33, 48));
+                }
+                return newPasssword.ToString();
             }
-            if (!HasUpperCase)
+            catch (Exception x)
             {
-                newPasssword.Append((char)random.Next(65, 91));
+                throw new Exception("Error occured while generating a new password");
             }
-            if (!HasDigit)
-            {
-                newPasssword.Append((char)random.Next(48, 58));
-            }
-            if (!HasSpecialCharacter)
-            {
-                newPasssword.Append((char)random.Next(33, 48));
-            }
-            return newPasssword.ToString();
         }
     }
 }
