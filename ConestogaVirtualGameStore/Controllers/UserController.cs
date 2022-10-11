@@ -22,7 +22,7 @@ namespace ConestogaVirtualGameStore.Controllers
         private readonly IPasswordValidator<ApplicationUser> passwordValidator;
         private readonly GameStoreContext _context;
 
-        public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager, 
+        public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager,
             IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV, GameStoreContext context)
         {
             userManager = uManager;
@@ -98,7 +98,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 }
                 catch (Exception x)
                 {
-                    TempData["ExceptionMessage"] = "An unexpected error has occurred while registering. Please try again later. " +x.GetBaseException().Message;
+                    TempData["ExceptionMessage"] = "An unexpected error has occurred while registering. Please try again later. " + x.GetBaseException().Message;
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -153,7 +153,7 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 await signInManager.SignOutAsync();
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 TempData["ExceptionMessage"] = "An unexpected error has occurred while Logging out. " + x.GetBaseException().Message;
                 return RedirectToAction("Index", "Home");
@@ -176,16 +176,16 @@ namespace ConestogaVirtualGameStore.Controllers
                 {
                     //I used a passwordValidator here because Identity does not automatically apply the password policy
                     //when updating user, only on creating user
-                    var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
-                    if (!resultValidate.Result.Succeeded)
-                    {
-                        foreach (IdentityError err in resultValidate.Result.Errors)
-                        {
-                            ModelState.AddModelError("", err.Description);
-                        }
-                    }
                     if (ModelState.IsValid)
                     {
+                        var resultValidate = passwordValidator.ValidateAsync(userManager, user, passwordModel.NewPassword);
+                        if (!resultValidate.Result.Succeeded)
+                        {
+                            foreach (IdentityError err in resultValidate.Result.Errors)
+                            {
+                                ModelState.AddModelError("", err.Description);
+                            }
+                        }
                         user.PasswordHash = passwordHasher.HashPassword(user, passwordModel.NewPassword);
                         IdentityResult result = await userManager.UpdateAsync(user);
                         if (result.Succeeded)
@@ -243,7 +243,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 }
                 ModelState.AddModelError("", "Email not found");
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 TempData["ExceptionMessage"] = "An unexpected error has occurred while Resetting Password. Please try again later. " + x.GetBaseException().Message;
                 return RedirectToAction("Index", "Home");
