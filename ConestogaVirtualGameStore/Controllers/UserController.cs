@@ -86,7 +86,7 @@ namespace ConestogaVirtualGameStore.Controllers
                         }
                         else
                         {
-                            System.Console.WriteLine("Send Email Failed");
+                            ModelState.AddModelError("", "Failed sending email confirmation. Please try again");
                         }
                     }
                     else
@@ -191,7 +191,8 @@ namespace ConestogaVirtualGameStore.Controllers
                         IdentityResult result = await userManager.UpdateAsync(user);
                         if (result.Succeeded)
                         {
-                            return RedirectToAction("Index", "Home");
+                            TempData["ChangeSuccess"] = "Password has been changed successfully.";
+                            return View();
                         }
                         foreach (IdentityError err in result.Errors)
                         {
