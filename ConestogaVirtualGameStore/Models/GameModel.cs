@@ -8,7 +8,8 @@ namespace ConestogaVirtualGameStore.Models
 {
     public class GameModel
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
         [Required]
         public int YearReleased { get; set; }
