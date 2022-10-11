@@ -24,52 +24,72 @@ namespace ConestogaVirtualGameStore.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-            var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
-            var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
-            var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
-            if (profile != null && preferences != null)
+            try
             {
-                ProfilePreferenceAddressViewModel profPref = new ProfilePreferenceAddressViewModel
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
+                var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                if (profile != null && preferences != null)
                 {
-                    Profile = profile,
-                    Preferences = preferences,
-                    Address = address
-                };
-                return View(profPref);
+                    ProfilePreferenceAddressViewModel profPref = new ProfilePreferenceAddressViewModel
+                    {
+                        Profile = profile,
+                        Preferences = preferences,
+                        Address = address
+                    };
+                    return View(profPref);
+                }
             }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Profile. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["NotFoundIndex"] = "Cannot find your profile. Please contact support to fix this issue";
             return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> UpdateProfile()
         {
               ApplicationUser user = await userManager.GetUserAsync(User);
-              var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
-              if (profile != null)
+            var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
+            //var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == "1923");
+            if (profile != null)
               {
                   return View(profile);
               }
-              return RedirectToAction("Index", "Home");
+            TempData["NotFoundProfile"] = "Cannot find your profile. Please contact support to fix the issue";
+              return RedirectToAction("Index", "Profile");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateProfile(int id, [Bind("Id, UserId, FirstName, LastName, Gender, DateOfBirth, IsSubscribed")] ProfileModel profile)
         {
-            if (id != profile.Id)
+            try
             {
-                return NotFound();
-            }
-            if (profile.DateOfBirth != null)
-            {
-                if (!IsDateValid((DateTime)profile.DateOfBirth))
+                if (id != profile.Id)
                 {
-                    ModelState.AddModelError("DateOfBirth","Date cannot be in the future");
+                    return NotFound();
+                }
+                if (profile.DateOfBirth != null)
+                {
+                    if (!IsDateValid((DateTime)profile.DateOfBirth))
+                    {
+                        ModelState.AddModelError("DateOfBirth", "Date cannot be in the future");
+                    }
+                }
+                if (ModelState.IsValid)
+                {
+                    _context.Update(profile);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Profile Updated Successfully";
+                    return RedirectToAction("Index", "Profile");
                 }
             }
-            if (ModelState.IsValid)
+            catch (Exception x)
             {
-                _context.Update(profile);
-                await _context.SaveChangesAsync();
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while updating your profile. Please try again later. " + x.GetBaseException().Message;
                 return RedirectToAction("Index", "Profile");
             }
             return View("UpdateProfile", profile);
@@ -90,45 +110,37 @@ namespace ConestogaVirtualGameStore.Controllers
                 };
                 return View(preference);
             }
-            return RedirectToAction("Index", "Home");
+            TempData["NotFoundProfile"] = "Cannot find your preference. Please contact support to fix the issue";
+            return RedirectToAction("Index", "Profile");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdatePreference([Bind("PreferencesModelId, UserId, Platform, Category")] PreferenceViewModel preference)
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-            PreferencesModel pref = await _context.Preferences.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
-            if (pref.UserId != preference.UserId && pref.PreferencesModelId != preference.PreferencesModelId)
+            try
             {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                PreferencesModel pref = await _context.Preferences.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+                if (pref.UserId != preference.UserId && pref.PreferencesModelId != preference.PreferencesModelId)
+                {
+                    return NotFound();
+                }
+                if (ModelState.IsValid)
+                {
 
-                pref.Category = preference.Category != null ? preference.Category.Join(",") : null;
-                pref.Platform = preference.Platform != null ? preference.Platform.Join(",") : null;
-                _context.Update(pref);
-                await _context.SaveChangesAsync();
+                    pref.Category = preference.Category != null ? preference.Category.Join(",") : null;
+                    pref.Platform = preference.Platform != null ? preference.Platform.Join(",") : null;
+                    _context.Update(pref);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Preference Updated Successfully";
+                    return RedirectToAction("Index", "Profile");
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while updating your preference. Please try again later. " + x.GetBaseException().Message;
                 return RedirectToAction("Index", "Profile");
             }
-            /* var id = _context.Preferences.Where(a => a.UserId == user.Id).AsNoTracking().FirstOrDefault();
-            if(user.Id != preference.UserId && id.PreferencesModelId != preference.PreferencesModelId)
-            {
-                return NotFound();
-            } 
-            if (ModelState.IsValid)
-            {
-                PreferencesModel pref = new PreferencesModel
-                {
-                    PreferencesModelId = preference.PreferencesModelId,
-                    UserId = preference.UserId,
-                    Category = preference.Category != null ? preference.Category.Join(",") : null,
-                    Platform = preference.Platform != null ? preference.Platform.Join(",") : null
-                }; 
-                _context.Update(pref);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home"); 
-            } */
             return View("UpdatePreference", preference);
         }
 
@@ -140,25 +152,35 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 return View(address);
             }
-            return RedirectToAction("Index", "Home");
+            TempData["NotFoundProfile"] = "Cannot find your address. Please contact support to fix the issue";
+            return RedirectToAction("Index", "Profile");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress, IsSame")] AddressModel address)
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-            AddressModel addr = await _context.Address.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
-            if (addr.UserId != address.UserId && addr.AddressModelId != address.AddressModelId)
+            try
             {
-                return NotFound();
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                AddressModel addr = await _context.Address.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+                if (addr.UserId != address.UserId && addr.AddressModelId != address.AddressModelId)
+                {
+                    return NotFound();
+                }
+                if (ModelState.IsValid)
+                {
+                    addr.MailingAddress = address.MailingAddress;
+                    addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
+                    addr.IsSame = address.IsSame;
+                    _context.Update(addr);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Preference Updated Successfully";
+                    return RedirectToAction("Index", "Profile");
+                }
             }
-            if (ModelState.IsValid)
+            catch (Exception x)
             {
-                addr.MailingAddress = address.MailingAddress;
-                addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
-                addr.IsSame = address.IsSame;
-                _context.Update(addr);
-                await _context.SaveChangesAsync();
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while updating your address. Please try again later. " + x.GetBaseException().Message;
                 return RedirectToAction("Index", "Profile");
             }
             return View("UpdateAddress", address);
