@@ -2,6 +2,7 @@
 @using ConestogaVirtualGameStore.Models.ViewModels
 @model PreferenceViewModel
 @{
+    Layout = "_LayoutWithoutHeader";
 }
 <h1>Preference Page</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -26,7 +27,7 @@
 </form>
 
 <br />
-<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary">Back</a>
+<a asp-controller="Profile" asp-action="Preference" class="btn btn-secondary">Back</a>
 
 @section Scripts {
     @{

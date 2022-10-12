@@ -30,7 +30,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
                 var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
                 var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
-                if (profile != null && preferences != null)
+                if (profile != null)
                 {
                     ProfilePreferenceAddressViewModel profPref = new ProfilePreferenceAddressViewModel
                     {
@@ -48,6 +48,65 @@ namespace ConestogaVirtualGameStore.Controllers
             }
             TempData["NotFoundIndex"] = "Cannot find your profile. Please contact support to fix this issue";
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> Profile()
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                var profile = await _context.Profiles.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                if (profile != null)
+                {
+                    return View(profile);
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Profile. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Profile");
+            }
+            TempData["NotFoundProfile"] = "Cannot find your Profile. Please contact support to fix this issue";
+            return RedirectToAction("Index", "Profile");
+        }
+
+        public async Task<IActionResult> Preference()
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                if(preferences != null)
+                {
+                    return View(preferences);
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Preference. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Profile");
+            }
+            TempData["NotFoundProfile"] = "Cannot find your Preference. Please contact support to fix this issue";
+            return RedirectToAction("Index", "Profile");
+        }
+
+        public async Task<IActionResult> Address()
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                if (address != null)
+                {
+                    return View(address);
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Address. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Profile");
+            }
+            TempData["NotFoundProfile"] = "Cannot find your Address. Please contact support to fix this issue";
+            return RedirectToAction("Index", "Profile");
         }
 
         public async Task<IActionResult> UpdateProfile()
@@ -84,7 +143,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "Profile Updated Successfully";
-                    return RedirectToAction("Index", "Profile");
+                    return RedirectToAction("Profile", "Profile");
                 }
             }
             catch (Exception x)
@@ -133,7 +192,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     _context.Update(pref);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "Preference Updated Successfully";
-                    return RedirectToAction("Index", "Profile");
+                    return RedirectToAction("Preference", "Profile");
                 }
             }
             catch (Exception x)
@@ -175,7 +234,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     _context.Update(addr);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "Preference Updated Successfully";
-                    return RedirectToAction("Index", "Profile");
+                    return RedirectToAction("Address", "Profile");
                 }
             }
             catch (Exception x)

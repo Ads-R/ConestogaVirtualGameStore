@@ -7,13 +7,23 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+<header>
+</header>
 <body>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="tab">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Home Page</a>
+        <a asp-action="Index" class="btn btn-primary">User Details</a>
+        <a asp-action="Profile" class="btn btn-primary">Profile</a>
+        <a asp-action="Preference" class="btn btn-primary">Preferences</a>
+        <a asp-action="Address" class="btn btn-primary">Address</a>
     </div>
-
+    <div class="tabcontent">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - ConestogaVirtualGameStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

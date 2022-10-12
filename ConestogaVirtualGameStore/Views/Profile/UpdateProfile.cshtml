@@ -1,6 +1,7 @@
 ﻿@using ConestogaVirtualGameStore.Classes
 @model ProfileModel
 @{
+    Layout = "_LayoutWithoutHeader";
 }
 <h1>Profile Page</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -38,7 +39,7 @@
 </form>
 
 <br />
-<a asp-controller="Profile" asp-action="Index" class="btn btn-secondary">Back</a>
+<a asp-controller="Profile" asp-action="Profile" class="btn btn-secondary">Back</a>
 
 @section Scripts {
     @{

@@ -1,0 +1,29 @@
+﻿@model PreferencesModel
+@{
+    Layout = "_LayoutWithoutHeader";
+}
+<span class="text-white bg-success">@TempData["Success"]</span>
+<h1>Preference Page</h1>
+<div>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Platform)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Platform)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="UpdatePreference" class="btn btn-primary">Update Preferences</a>
+    <br /><br />
+</div>

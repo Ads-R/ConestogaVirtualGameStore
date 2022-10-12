@@ -1,0 +1,47 @@
+﻿@model ProfileModel
+@{
+    Layout = "_LayoutWithoutHeader";
+}
+<span class="text-white bg-success">@TempData["Success"]</span>
+<h1>Profile Page</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsSubscribed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsSubscribed)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="UpdateProfile" class="btn btn-primary">Update Profile</a>
+    <br /><br />
+</div>
