@@ -4,6 +4,7 @@ namespace ConestogaVirtualGameStore.Models
 {
     public class RegisterModel
     {
+        [Display(Name ="Display Name")]
         [Required]
         public string UserName { get; set; }
 

@@ -6,66 +6,91 @@
 @{
 }
 <style>
-    .input-validation-error{
+    .input-validation-error {
         border-color: red;
     }
 </style>
 
-<h1>Register</h1>
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-between">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 mx-auto">
 
-<form method="POST">
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
+                            <form method="POST">
+
+                                <div class="form-group">
+                                    <label asp-for="UserName"></label>
+                                    <input asp-for="UserName" class="form-control" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Password"></label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="ConfirmPassword"></label>
+                                    <input asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <dnt-captcha asp-captcha-generator-max="999999"
+                                                 asp-captcha-generator-min="111111"
+                                                 asp-captcha-generator-language="English"
+                                                 asp-captcha-generator-display-mode="ShowDigits"
+                                                 asp-use-relative-urls="true"
+                                                 asp-placeholder="Enter Security code"
+                                                 asp-validation-error-message="Please enter the security code as a number."
+                                                 asp-font-name="Tahoma"
+                                                 asp-font-size="20"
+                                                 asp-fore-color="#333333"
+                                                 asp-back-color="#ccc"
+                                                 asp-text-box-class="text-box form-control"
+                                                 asp-text-box-template="<span class='input-group-prepend'><span class='form-group-text'></i></span></span>{0}"
+                                                 asp-validation-message-class="text-danger"
+                                                 asp-refresh-button-class="fas fa-redo btn-sm"
+                                                 asp-show-refresh-button="true" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Register</button>
+
+                            </form>
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+
+                </div>
+            </div>
+            <!--/row-->
+
+        </div>
+        <!--/col-->
     </div>
+    <!--/row-->
 
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-
-    <div class="input-group mb-3">
-        <dnt-captcha asp-captcha-generator-max="999999"
-                     asp-captcha-generator-min="111111"
-                     asp-captcha-generator-language="English"
-                     asp-captcha-generator-display-mode="ShowDigits"
-                     asp-use-relative-urls="true"
-                     asp-placeholder="Enter Security code"
-                     asp-validation-error-message="Please enter the security code as a number."
-                     asp-font-name="Tahoma"
-                     asp-font-size="20"
-                     asp-fore-color="#333333"
-                     asp-back-color="#ccc"
-                     asp-text-box-class="text-box form-control"
-                     asp-text-box-template="<span class='input-group-prepend'><span class='form-group-text'></i></span></span>{0}"
-                     asp-validation-message-class="text-danger"
-                     asp-refresh-button-class="fas fa-redo btn-sm"
-                     asp-show-refresh-button="true" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Register</button>
-
-    </form>
-
-<script src="~/js/site.js"></script>
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>

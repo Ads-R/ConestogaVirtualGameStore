@@ -11,8 +11,10 @@ namespace ConestogaVirtualGameStore.Models
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
+        [Display(Name ="Year Released")]
         [Required]
         public int YearReleased { get; set; }
+        [Display(Name = "Retail Price")]
         [Required]
         public double RetailPrice { get; set; }
         public string Description { get; set; }

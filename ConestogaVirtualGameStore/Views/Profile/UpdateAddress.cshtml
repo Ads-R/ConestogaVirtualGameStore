@@ -1,6 +1,6 @@
 ﻿@model AddressModel
 @{
-    Layout = "_LayoutWithoutHeader";
+    Layout = "_LayoutMemberPanel";
 }
 <h1>Update Address</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -26,7 +26,7 @@
     </form>
 
 <br />
-<a asp-controller="Profile" asp-action="Address" class="btn btn-secondary">Back</a>
+@*<a asp-controller="Profile" asp-action="Address" class="btn btn-secondary">Back</a>*@
 
 @section Scripts {
     @{
