@@ -7,12 +7,13 @@ namespace ConestogaVirtualGameStore.Models
     {
         public int AddressModelId { get; set; }
         public string UserId { get; set; }
-        [Display(Name ="Mailing Address")]
-        public string MailingAddress { get; set; }
-        [Display(Name ="Shipping Address")]
-        public string ShippingAddress { get; set; }
         [Display(Name ="Is same?")]
         public bool IsSame { get; set; }
+
+
         public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual MailingAddress MailingAddress { get; set; }
+        public virtual ShippingAddress ShippingAddress { get; set; }
+
     }
 }

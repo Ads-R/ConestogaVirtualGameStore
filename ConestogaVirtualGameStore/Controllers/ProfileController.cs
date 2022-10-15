@@ -229,7 +229,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 if (ModelState.IsValid)
                 {
                     addr.MailingAddress = address.MailingAddress;
-                    addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
+                    //addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
                     addr.IsSame = address.IsSame;
                     _context.Update(addr);
                     await _context.SaveChangesAsync();
