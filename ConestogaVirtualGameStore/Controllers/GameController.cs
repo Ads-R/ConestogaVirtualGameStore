@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class GameController : Controller
     {
         private readonly GameStoreContext _context;
