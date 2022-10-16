@@ -17,9 +17,10 @@ namespace ConestogaVirtualGameStore.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         [Display(Name ="Date of Birth")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dddd, MMMM d, yyyy}")]
         public DateTime? DateOfBirth { get; set; }
-        [Display(Name ="Is Subscribed?")]
+        [Display(Name ="Receive promotional emails from CVGS")]
         public bool IsSubscribed { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
