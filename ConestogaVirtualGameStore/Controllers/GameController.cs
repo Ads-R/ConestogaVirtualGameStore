@@ -35,14 +35,16 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
 
             var gameModel = await _context.Games
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gameModel == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
 
             return View(gameModel);
@@ -60,27 +62,36 @@ namespace ConestogaVirtualGameStore.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,YearReleased," +
             "RetailPrice,Description,Category,Platform,ImageFile")] GameModel gameModel)
         {
-            if (gameModel.ImageFile == null)
+            try
             {
-                ModelState.AddModelError("ImageFile", "Cover Image is required when adding a new game");
-            }
-            bool IsValidDate = IsDateValid(gameModel.YearReleased);
-            if (!IsDateValid(gameModel.YearReleased))
-            {
-                ModelState.AddModelError("YearReleased", "Date cannot be in the future");
-            }
-            if (ModelState.IsValid)
-            {
-                string fileName = GenerateUniqueGameName(gameModel.ImageFile);
-                gameModel.ImageName = fileName;
-                string path = GetPath(fileName);
-
-                using(var fileStream = new FileStream(path, FileMode.Create))
+                if (gameModel.ImageFile == null)
                 {
-                    await gameModel.ImageFile.CopyToAsync(fileStream);
+                    ModelState.AddModelError("ImageFile", "Cover Image is required when adding a new game");
                 }
-                _context.Add(gameModel);
-                await _context.SaveChangesAsync();
+                bool IsValidDate = IsDateValid(gameModel.YearReleased);
+                if (!IsDateValid(gameModel.YearReleased))
+                {
+                    ModelState.AddModelError("YearReleased", "Date cannot be in the future");
+                }
+                if (ModelState.IsValid)
+                {
+                    string fileName = GenerateUniqueGameName(gameModel.ImageFile);
+                    gameModel.ImageName = fileName;
+                    string path = GetPath(fileName);
+
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await gameModel.ImageFile.CopyToAsync(fileStream);
+                    }
+                    _context.Add(gameModel);
+                    await _context.SaveChangesAsync();
+                    TempData["GSuccess"] = "Game added successfully";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["GException"] = "An error has occurred. Error message: " + x.Message;
                 return RedirectToAction(nameof(Index));
             }
             return View(gameModel);
@@ -91,13 +102,15 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
 
             var gameModel = await _context.Games.FindAsync(id);
             if (gameModel == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
             return View(gameModel);
         }
@@ -108,14 +121,15 @@ namespace ConestogaVirtualGameStore.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,YearReleased,RetailPrice," +
             "Description,ImageName,Category,Platform,ImageFile")] GameModel gameModel)
         {
-            if (id != gameModel.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != gameModel.Id)
+                {
+                    TempData["GNotFound"] = "Cannot find game";
+                    return RedirectToAction(nameof(Index));
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
                     if (gameModel.ImageFile != null)
                     {
@@ -124,7 +138,7 @@ namespace ConestogaVirtualGameStore.Controllers
                         gameModel.ImageName = fileName;
                         string path = GetPath(fileName);
 
-                        using(var fileStream = new FileStream(path, FileMode.Create))
+                        using (var fileStream = new FileStream(path, FileMode.Create))
                         {
                             await gameModel.ImageFile.CopyToAsync(fileStream);
                         }
@@ -133,18 +147,13 @@ namespace ConestogaVirtualGameStore.Controllers
                     }
                     _context.Update(gameModel);
                     await _context.SaveChangesAsync();
+                    TempData["GSuccess"] = "Game modified successfully";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!GameModelExists(gameModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+            }
+            catch (Exception x)
+            {
+                TempData["GException"] = "An error has occurred. Error message: " + x.Message;
                 return RedirectToAction(nameof(Index));
             }
             return View(gameModel);
@@ -155,14 +164,16 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
 
             var gameModel = await _context.Games
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gameModel == null)
             {
-                return NotFound();
+                TempData["GNotFound"] = "Cannot find game";
+                return RedirectToAction(nameof(Index));
             }
 
             return View(gameModel);
@@ -173,16 +184,24 @@ namespace ConestogaVirtualGameStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var gameModel = await _context.Games.FindAsync(id);
-
-            if(gameModel != null)
+            try
             {
-                var imageLocation = GetPath(gameModel.ImageName);
-                DeleteFile(imageLocation);
-                _context.Games.Remove(gameModel);
-                await _context.SaveChangesAsync();
+                var gameModel = await _context.Games.FindAsync(id);
+
+                if (gameModel != null)
+                {
+                    var imageLocation = GetPath(gameModel.ImageName);
+                    DeleteFile(imageLocation);
+                    _context.Games.Remove(gameModel);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception x)
+            {
+                TempData["GException"] = "An error has occurred. Error message: " + x.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool GameModelExists(int id)

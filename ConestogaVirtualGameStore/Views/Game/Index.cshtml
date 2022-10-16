@@ -11,26 +11,66 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
+<span class="text-white bg-success">@TempData["GSuccess"]</span>
+<span class="text-white bg-danger">@TempData["GNotFound"]</span>
+<span class="text-white bg-danger">@TempData["GException"]</span>
 
-<h1>Admin Home</h1>
+<h1>Games</h1>
 
-<table>
-    <tr>
-@foreach (var item in Model) 
-     {
 
-            <td>
-            <div class="card" style="width:150px">
-                    <a asp-action="Details" asp-route-id="@item.Id" class="stretched-link">
-        <img class="card-img-top" src="@("~/Images/GameCovers/"+item.ImageName)" asp-append-version="true" alt="Card image" width="150px" height="90px">
-                    </a>
-        <div class="card-body">
-            <h4 class="card-title">@item.Title</h4>
-            <p class="card-text">$@item.RetailPrice</p>
-            </div>
-            </div>
-            </td>
-            <br />
-     }
-     </tr>
-</table>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        <a asp-action="Create">Add a Game</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RetailPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Platform)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Platform)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">EditGame</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">GameDetails</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">DeleteGame</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

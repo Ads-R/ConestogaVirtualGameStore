@@ -15,6 +15,8 @@ namespace ConestogaVirtualGameStore.Models
         [Required]
         public int YearReleased { get; set; }
         [Display(Name = "Retail Price")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        [Range(1,1000, ErrorMessage = "Please enter a realistic price. The price you are trying to enter is absurd lol.")]
         [Required]
         public double RetailPrice { get; set; }
         public string Description { get; set; }
