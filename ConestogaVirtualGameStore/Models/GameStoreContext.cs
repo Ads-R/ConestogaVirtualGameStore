@@ -108,5 +108,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<Country> Country { get; set; }
         public DbSet<Province> Province { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<EventModel> Events { get; set; }
     }
 }
