@@ -2,7 +2,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,14 +30,14 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-hat-wizard"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">CVG Member</div>
+                <div class="sidebar-brand-text mx-3">CVG Admin</div>
             </a>
 
             <!-- Divider -->
@@ -46,9 +45,9 @@
 
             <!-- Nav Item - Selecting game -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="nav-link" asp-area="" asp-controller="Game" asp-action="Index">
                     <i class="fas fa-fw fa-gamepad"></i>
-                    <span>Selecting game</span>
+                    <span>Games</span>
                 </a>
             </li>
 
@@ -58,47 +57,14 @@
 
             <!-- Nav Item - Selecting game -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="Index">
+                <a class="nav-link" asp-area="" asp-controller="Event" asp-action="Index">
                     <i class="fas fa-fw fa-id-card"></i>
-                    <span>User Details</span>
+                    <span>Events</span>
                 </a>
             </li>
 
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - Selecting game -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdateProfile">
-                    <i class="fas fa-fw fa-head-side-cough"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            <!-- Nav Item - Selecting game -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdatePreference">
-                    <i class="fas fa-fw fa-bookmark"></i>
-                    <span>Preference</span>
-                </a>
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            <!-- Nav Item - Selecting game -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdateAddress">
-                    <i class="fas fa-fw fa-address-book"></i>
-                    <span>Address</span>
-                </a>
-            </li>
-
-
+           
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -129,7 +95,7 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
+   
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
