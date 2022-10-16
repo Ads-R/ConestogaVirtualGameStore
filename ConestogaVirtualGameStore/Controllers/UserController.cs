@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Runtime.Loader;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,17 @@ namespace ConestogaVirtualGameStore.Controllers
                             _context.Add(profile);
                             _context.Add(preference);
                             _context.Add(address);
+                            await _context.SaveChangesAsync();
+                            MailingAddress mail = new MailingAddress
+                            {
+                                AddressModelId = address.AddressModelId
+                            };
+                            ShippingAddress ship = new ShippingAddress
+                            {
+                                AddressModelId = address.AddressModelId
+                            };
+                            _context.Add(mail);
+                            _context.Add(ship);
                             await _context.SaveChangesAsync();
                             return RedirectToAction("ConfirmEmail", "User");
                         }
