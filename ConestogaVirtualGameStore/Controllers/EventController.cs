@@ -1,12 +1,15 @@
 ﻿using ConestogaVirtualGameStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class EventController : Controller
     {
         private readonly GameStoreContext _context;

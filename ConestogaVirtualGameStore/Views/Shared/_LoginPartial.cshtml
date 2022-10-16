@@ -3,25 +3,34 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-light" asp-controller="Profile" asp-action="Index" title="Manage">Hello @User.Identity.Name!</a>
-    </li>
-    <li class="nav-item">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (!User.IsInRole("admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-controller="Profile" asp-action="Index" title="Manage">Hello @User.Identity.Name!</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-controller="Game" asp-action="Index">Admin Panel</a>
+            </li>
+        }
+        <li class="nav-item">
             <a class="nav-link text-light" asp-controller="User" asp-action="Logout">Logout</a>
-    </li>
-    <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-light" asp-controller="User" asp-action="ChangePassword">Change Password</a>
-    </li>
-}
-else
-{
-    <li class="nav-item">
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
             <a class="nav-link text-light" asp-controller="User" asp-action="Register">Register</a>
-    </li>
-    <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-light" asp-controller="User" asp-action="Login">Login</a>
-    </li>
-}
+        </li>
+    }
 </ul>
