@@ -194,6 +194,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     DeleteFile(imageLocation);
                     _context.Games.Remove(gameModel);
                     await _context.SaveChangesAsync();
+                    TempData["GSuccess"] = "Game deleted successfully";
                 }
                 return RedirectToAction(nameof(Index));
             }
