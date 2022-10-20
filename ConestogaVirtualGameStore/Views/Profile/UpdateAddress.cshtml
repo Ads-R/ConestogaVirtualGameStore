@@ -2,52 +2,170 @@
 @{
     Layout = "_LayoutMemberPanel";
 }
+
+<script src="/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+
+
 <h1>Update Address</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-action="UpdateAddress" method="post">
     <input type="hidden" asp-for="AddressModelId" />
     <input type="hidden" asp-for="UserId" />
-    <div class="form-group">
-        <label asp-for="MailingAddress"></label>
-        <input asp-for="MailingAddress" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="ShippingAddress"></label>
-        <input asp-for="ShippingAddress" class="form-control" />
+    <input type="hidden" asp-for="MailingAddress.AddressModelId" />
+    <input type="hidden" asp-for="MailingAddress.MailingAddressId" />
+    <input type="hidden" asp-for="ShippingAddress.AddressModelId" />
+    <input type="hidden" asp-for="ShippingAddress.ShippingAddressId" />
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="MailingAddress.MailAddress1"></label>
+                <input asp-for="MailingAddress.MailAddress1" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAddress.MailAddress2"></label>
+                <input asp-for="MailingAddress.MailAddress2" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAddress.MailCountry"></label>
+                <select asp-for="MailingAddress.MailCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAddress.MailProvince"></label>
+                <select asp-for="MailingAddress.MailProvince" asp-items="@(new SelectList(@ViewBag.MailProvince, "ProvinceId", "ProvinceName"))" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAddress.MailCity"></label>
+                <select asp-for="MailingAddress.MailCity" asp-items="@(new SelectList(@ViewBag.MailCity, "CityId", "CityName"))" class="form-control"></select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="ShippingAddress.ShipAddress1"></label>
+                <input asp-for="ShippingAddress.ShipAddress1" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress.ShipAddress2"></label>
+                <input asp-for="ShippingAddress.ShipAddress2" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress.ShipCountry"></label>
+                <select asp-for="ShippingAddress.ShipCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress.ShipProvince"></label>
+                <select asp-for="ShippingAddress.ShipProvince" asp-items="@(new SelectList(ViewBag.ShipProvince, "ProvinceId", "ProvinceName"))" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress.ShipCity"></label>
+                <select asp-for="ShippingAddress.ShipCity" asp-items="@(new SelectList(@ViewBag.ShipCity, "CityId", "CityName"))" class="form-control"></select>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label asp-for="IsSame"></label>
-        <input asp-for="IsSame" class="form-control" onchange="chkLock()"/>
+        <input asp-for="IsSame" class="form-control" onchange="chkLock()" />
     </div>
-
     <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
+</form>
 
 <br />
 @*<a asp-controller="Profile" asp-action="Address" class="btn btn-secondary">Back</a>*@
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        window.onload = assignChk;
-        function assignChk(){
-            var chkStatus = document.getElementById("IsSame");
-            var shipField = document.getElementById("ShippingAddress");
-            if(chkStatus.checked == true){
-                shipField.disabled = true;
-            }
-            else{
-                shipField.disabled = false;
-            }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#MailingAddress_MailCountry').change(function () {
+            var url = '@Url.Content("~/")' + "Profile/GetProvince";
+            var source = "#MailingAddress_MailCountry";
+            $.getJSON(url, { CountryId: $(source).val() }, function (data) {
+                var pItems = '';
+                var cItems = "<option value='0'>Select City</option>";
+                $('#MailingAddress_MailProvince').empty();
+                $.each(data, function (i, province) {
+                    pItems += "<option value='" + province.value + "'>" + province.text + "</option>";
+                });
+                $('#MailingAddress_MailProvince').html(pItems);
+                $('#MailingAddress_MailCity').html(cItems);
+            });
+        });
+        $('#MailingAddress_MailProvince').change(function () {
+            var url = '@Url.Content("~/")' + "Profile/GetCity";
+            var source = "#MailingAddress_MailProvince";
+            $.getJSON(url, { ProvinceId: $(source).val() }, function (data) {
+                var items = '';
+                $('#MailingAddress_MailCity').empty();
+                $.each(data, function (i, city) {
+                    items += "<option value='" + city.value + "'>" + city.text + "</option>";
+                });
+                $('#MailingAddress_MailCity').html(items);
+            });
+        });
+        $('#ShippingAddress_ShipCountry').change(function () {
+            var url = '@Url.Content("~/")' + "Profile/GetProvince";
+            var source = "#ShippingAddress_ShipCountry";
+            $.getJSON(url, { CountryId: $(source).val() }, function (data) {
+                var pItems = '';
+                var cItems = "<option value='0'>Select City</option>";
+                $('#ShippingAddress_ShipProvince').empty();
+                $.each(data, function (i, province) {
+                    pItems += "<option value='" + province.value + "'>" + province.text + "</option>";
+                });
+                $('#ShippingAddress_ShipProvince').html(pItems);
+                $('#ShippingAddress_ShipCity').html(cItems);
+            });
+        });
+        $('#ShippingAddress_ShipProvince').change(function () {
+            var url = '@Url.Content("~/")' + "Profile/GetCity";
+            var source = "#ShippingAddress_ShipProvince";
+            $.getJSON(url, { ProvinceId: $(source).val() }, function (data) {
+                var items = '';
+                $('#ShippingAddress_ShipCity').empty();
+                $.each(data, function (i, city) {
+                    items += "<option value='" + city.value + "'>" + city.text + "</option>";
+                });
+                $('#ShippingAddress_ShipCity').html(items);
+            });
+        });
+    });
+</script>
+
+<script>
+    window.onload = assignChk;
+    function assignChk() {
+        var chkStatus = document.getElementById("IsSame");
+        var shipaddr1 = document.getElementById("ShippingAddress_ShipAddress1");
+        var shipaddr2 = document.getElementById("ShippingAddress_ShipAddress2");
+        var shipcountry = document.getElementById("ShippingAddress_ShipCountry");
+        var shipprovince = document.getElementById("ShippingAddress_ShipProvince");
+        var shipcity = document.getElementById("ShippingAddress_ShipCity");
+        if (chkStatus.checked == true) {
+            shipaddr1.disabled = true;
+            shipaddr2.disabled = true;
+            shipcountry.disabled = true;
+            shipprovince.disabled = true;
+            shipcity.disabled = true;
         }
-    </script>
-    <script>
-        function chkLock() {
-            var shipField = document.getElementById("ShippingAddress");
-            shipField.disabled = !shipField.disabled;
+        else {
+            shipaddr1.disabled = false;
+            shipaddr2.disabled = false;
+            shipcountry.disabled = false;
+            shipprovince.disabled = false;
+            shipcity.disabled = false;
         }
-    </script>
     }
+</script>
+
+<script>
+    function chkLock() {
+        var shipaddr1 = document.getElementById("ShippingAddress_ShipAddress1");
+        var shipaddr2 = document.getElementById("ShippingAddress_ShipAddress2");
+        var shipcountry = document.getElementById("ShippingAddress_ShipCountry");
+        var shipprovince = document.getElementById("ShippingAddress_ShipProvince");
+        var shipcity = document.getElementById("ShippingAddress_ShipCity");
+        shipaddr1.disabled = !shipaddr1.disabled;
+        shipaddr2.disabled = !shipaddr2.disabled;
+        shipcountry.disabled = !shipcountry.disabled;
+        shipprovince.disabled = !shipprovince.disabled;
+        shipcity.disabled = !shipcity.disabled;
+    }
+</script>

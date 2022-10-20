@@ -55,6 +55,26 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Preferences.Category)
         </dd>
+        <dt class="col-sm-2">
+           @Html.Raw("Mailing Address: ")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.MailingAddress.MailAddress1)  
+            @Html.DisplayFor(model => model.Address.MailingAddress.MailAddress2)  
+            @Html.DisplayFor(model => model.Address.MailingAddress.City.CityName)  
+            @Html.DisplayFor(model => model.Address.MailingAddress.Province.ProvinceName)  
+            @Html.DisplayFor(model => model.Address.MailingAddress.Country.CountryName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.Raw("Shipping Address: ")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address.ShippingAddress.ShipAddress1)
+            @Html.DisplayFor(model => model.Address.ShippingAddress.ShipAddress2)
+            @Html.DisplayFor(model => model.Address.ShippingAddress.City.CityName)  
+            @Html.DisplayFor(model => model.Address.ShippingAddress.Province.ProvinceName)  
+            @Html.DisplayFor(model => model.Address.ShippingAddress.Country.CountryName)
+        </dd>
     </dl>
 </div>
 

@@ -3,9 +3,11 @@ using ConestogaVirtualGameStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,7 +31,14 @@ namespace ConestogaVirtualGameStore.Controllers
                 ApplicationUser user = await userManager.GetUserAsync(User);
                 var profile = await _context.Profiles.FirstOrDefaultAsync(a => a.UserId == user.Id);
                 var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
-                var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
+                var address = await _context.Address
+                    .Include(a => a.MailingAddress.Country)
+                    .Include(b => b.MailingAddress.Province)
+                    .Include(e => e.MailingAddress.City)
+                    .Include(c => c.ShippingAddress.Country)
+                    .Include(d => d.ShippingAddress.Province)
+                    .Include(f => f.ShippingAddress.City)
+                    .FirstOrDefaultAsync(b => b.UserId == user.Id);
                 if (profile != null)
                 {
                     ProfilePreferenceAddressViewModel profPref = new ProfilePreferenceAddressViewModel
@@ -203,18 +212,166 @@ namespace ConestogaVirtualGameStore.Controllers
             return View("UpdatePreference", preference);
         }
 
-       /* public async Task<IActionResult> UpdateAddress()
+        public async Task<IActionResult> UpdateAddress()
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-            var address = await _context.Address.FirstOrDefaultAsync(a => a.UserId == user.Id);
-            if (address != null)
+            try
             {
-                return View(address);
-            }
-            TempData["NotFoundProfile"] = "Cannot find your address. Please contact support to fix the issue";
-            return RedirectToAction("Index", "Profile");
-        } */
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                var address = await _context.Address
+                    .Include(b => b.MailingAddress)
+                    .Include(c => c.ShippingAddress)
+                    .FirstOrDefaultAsync(a => a.UserId == user.Id);
 
+                List<Country> countryList = new List<Country>();
+                List<Province> mailProvinceList = new List<Province>();
+                List<City> mailCityList = new List<City>();
+
+                List<Province> shipProvinceList = new List<Province>();
+                List<City> shipCityList = new List<City>();
+
+                countryList = await _context.Country.ToListAsync();
+                countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Province" });
+
+                if (address.MailingAddress.MailCountry != null)
+                {
+                    mailProvinceList = await _context.Province.Where(e => e.CountryId == address.MailingAddress.MailCountry).ToListAsync();
+                }
+                if (address.ShippingAddress.ShipCountry != null)
+                {
+                    shipProvinceList = await _context.Province.Where(e => e.CountryId == address.ShippingAddress.ShipCountry).ToListAsync();
+                }
+                if (address.MailingAddress.MailProvince != null)
+                {
+                    mailCityList = await _context.City.Where(e => e.ProvinceId == address.MailingAddress.MailProvince).ToListAsync();
+                }
+                if (address.ShippingAddress.ShipProvince != null)
+                {
+                    shipCityList = await _context.City.Where(e => e.ProvinceId == address.ShippingAddress.ShipProvince).ToListAsync();
+                }
+                if (address != null)
+                {
+                    mailProvinceList.Insert(0, new Province { ProvinceId = 0, ProvinceName = "Select Province" });
+                    shipProvinceList.Insert(0, new Province { ProvinceId = 0, ProvinceName = "Select Province" });
+                    mailCityList.Insert(0, new City { CityId = 0, CityName = "Select City" });
+                    shipCityList.Insert(0, new City { CityId = 0, CityName = "Select City" });
+                    ViewBag.MailCity = mailCityList;
+                    ViewBag.MailProvince = mailProvinceList;
+                    ViewBag.ShipCity = shipCityList;
+                    ViewBag.ShipProvince = shipProvinceList;
+                    ViewBag.Country = countryList;
+                    return View(address);
+                }
+                TempData["NotFoundProfile"] = "Cannot find your address. Please contact support to fix the issue";
+                return RedirectToAction("Index", "Profile");
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while querying your address data. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Profile");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAddress(AddressModel address)
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                AddressModel addr = await _context.Address
+                    .Include(b => b.MailingAddress)
+                    .Include(c => c.ShippingAddress)
+                    .Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
+                if (addr == null)
+                {
+                    return NotFound();
+                }
+                if (addr.UserId != address.UserId || addr.AddressModelId != address.AddressModelId)
+                {
+                    return NotFound();
+                }
+                if (ModelState.IsValid)
+                {
+                    addr.IsSame = address.IsSame;
+                    MailingAddress mail = addr.MailingAddress;
+                    ShippingAddress ship = addr.ShippingAddress;
+                    string address1 = address.MailingAddress.MailAddress1;
+                    string address2 = address.MailingAddress.MailAddress2;
+                    int? CountryId = address.MailingAddress.MailCountry == 0 ? null : address.MailingAddress.MailCountry;
+                    int? ProvinceId = address.MailingAddress.MailProvince == 0 ? null : address.MailingAddress.MailProvince;
+                    int? CityId = address.MailingAddress.MailCity == 0 ? null : address.MailingAddress.MailCity;
+                    mail.MailAddress1 = address1;
+                    mail.MailAddress2 = address2;
+                    mail.MailCountry = CountryId;
+                    mail.MailProvince = ProvinceId;
+                    mail.MailCity = CityId;
+                    if (address.IsSame)
+                    {
+                        ship.ShipAddress1 = address1;
+                        ship.ShipAddress2 = address2;
+                        ship.ShipCountry = CountryId;
+                        ship.ShipProvince = ProvinceId;
+                        ship.ShipCity = CityId;
+                    }
+                    else
+                    {
+                        ship.ShipAddress1 = address.ShippingAddress.ShipAddress1;
+                        ship.ShipAddress2 = address.ShippingAddress.ShipAddress2;
+                        ship.ShipCountry = address.ShippingAddress.ShipCountry == 0 ? null : address.ShippingAddress.ShipCountry;
+                        ship.ShipProvince = address.ShippingAddress.ShipProvince == 0 ? null : address.ShippingAddress.ShipProvince;
+                        ship.ShipCity = address.ShippingAddress.ShipCity == 0 ? null : address.ShippingAddress.ShipCity;
+                    }
+                    _context.Update(addr);
+                    _context.Update(mail);
+                    _context.Update(ship);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Address Updated Successfully";
+                    return RedirectToAction("Index", "Profile");
+                }
+            }
+            catch (Exception x)
+            {
+                TempData["ExceptionMessage"] = "An unexpected error has occurred while updating your address. Please try again later. " + x.GetBaseException().Message;
+                return RedirectToAction("Index", "Profile");
+            }
+
+            List<Country> countryList = new List<Country>();
+            List<Province> mailProvinceList = new List<Province>();
+            List<City> mailCityList = new List<City>();
+
+            List<Province> shipProvinceList = new List<Province>();
+            List<City> shipCityList = new List<City>();
+
+            countryList = await _context.Country.ToListAsync();
+            countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Province" });
+
+            if (address.MailingAddress.MailCountry != null)
+            {
+                mailProvinceList = await _context.Province.Where(e => e.CountryId == address.MailingAddress.MailCountry).ToListAsync();
+            }
+            if (address.ShippingAddress.ShipCountry != null)
+            {
+                shipProvinceList = await _context.Province.Where(e => e.CountryId == address.ShippingAddress.ShipCountry).ToListAsync();
+            }
+            if (address.MailingAddress.MailProvince != null)
+            {
+                mailCityList = await _context.City.Where(e => e.ProvinceId == address.MailingAddress.MailProvince).ToListAsync();
+            }
+            if (address.ShippingAddress.ShipProvince != null)
+            {
+                shipCityList = await _context.City.Where(e => e.ProvinceId == address.ShippingAddress.ShipProvince).ToListAsync();
+            }
+                mailProvinceList.Insert(0, new Province { ProvinceId = 0, ProvinceName = "Select Province" });
+                shipProvinceList.Insert(0, new Province { ProvinceId = 0, ProvinceName = "Select Province" });
+                mailCityList.Insert(0, new City { CityId = 0, CityName = "Select City" });
+                shipCityList.Insert(0, new City { CityId = 0, CityName = "Select City" });
+                ViewBag.MailCity = mailCityList;
+                ViewBag.MailProvince = mailProvinceList;
+                ViewBag.ShipCity = shipCityList;
+                ViewBag.ShipProvince = shipProvinceList;
+                ViewBag.Country = countryList;
+
+                return View("UpdateAddress", address);
+        }
         /* [HttpPost]
         public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress, IsSame")] AddressModel address)
         {
@@ -255,6 +412,22 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 return true;
             }
+        }
+
+        public JsonResult GetProvince(int CountryId)
+        {
+            List<Province> provinces = new List<Province>();
+            provinces = _context.Province.Where(p => p.CountryId == CountryId).ToList();
+            provinces.Insert(0, new Province { ProvinceId = 0, ProvinceName = "Select Province" });
+            return Json(new SelectList(provinces, "ProvinceId", "ProvinceName"));
+        }
+
+        public JsonResult GetCity(int ProvinceId)
+        {
+            List<City> cities = new List<City>();
+            cities = _context.City.Where(p => p.ProvinceId == ProvinceId).ToList();
+            cities.Insert(0, new City { CityId = 0, CityName = "Select City" });
+            return Json(new SelectList(cities, "CityId", "CityName"));
         }
     }
 }
