@@ -73,6 +73,7 @@ namespace ConestogaVirtualGameStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProfile(int id, [Bind("Id, UserId, FirstName, LastName, Gender, DateOfBirth, IsSubscribed")] ProfileModel profile)
         {
             try
@@ -124,13 +125,14 @@ namespace ConestogaVirtualGameStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePreference([Bind("PreferencesModelId, UserId, Platform, Category")] PreferenceViewModel preference)
         {
             try
             {
                 ApplicationUser user = await userManager.GetUserAsync(User);
                 PreferencesModel pref = await _context.Preferences.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
-                if (pref.UserId != preference.UserId && pref.PreferencesModelId != preference.PreferencesModelId)
+                if (pref.UserId != preference.UserId || pref.PreferencesModelId != preference.PreferencesModelId)
                 {
                     return NotFound();
                 }
@@ -171,7 +173,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 List<City> shipCityList = new List<City>();
 
                 countryList = await _context.Country.ToListAsync();
-                countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Province" });
+                countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Country" });
 
                 if (address.MailingAddress.MailCountry != null)
                 {
@@ -213,6 +215,7 @@ namespace ConestogaVirtualGameStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateAddress(AddressModel address)
         {
             try
@@ -283,7 +286,7 @@ namespace ConestogaVirtualGameStore.Controllers
             List<City> shipCityList = new List<City>();
 
             countryList = await _context.Country.ToListAsync();
-            countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Province" });
+            countryList.Insert(0, new Country { CountryId = 0, CountryName = "Select Country" });
 
             if (address.MailingAddress.MailCountry != null)
             {
