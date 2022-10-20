@@ -58,65 +58,6 @@ namespace ConestogaVirtualGameStore.Controllers
             TempData["NotFoundIndex"] = "Cannot find your profile. Please contact support to fix this issue";
             return RedirectToAction("Index", "Home");
         }
-       /* public async Task<IActionResult> Profile()
-        {
-            try
-            {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                var profile = await _context.Profiles.FirstOrDefaultAsync(b => b.UserId == user.Id);
-                if (profile != null)
-                {
-                    return View(profile);
-                }
-            }
-            catch (Exception x)
-            {
-                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Profile. Please try again later. " + x.GetBaseException().Message;
-                return RedirectToAction("Index", "Profile");
-            }
-            TempData["NotFoundProfile"] = "Cannot find your Profile. Please contact support to fix this issue";
-            return RedirectToAction("Index", "Profile");
-        }
-
-        public async Task<IActionResult> Preference()
-        {
-            try
-            {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                var preferences = await _context.Preferences.FirstOrDefaultAsync(b => b.UserId == user.Id);
-                if(preferences != null)
-                {
-                    return View(preferences);
-                }
-            }
-            catch (Exception x)
-            {
-                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Preference. Please try again later. " + x.GetBaseException().Message;
-                return RedirectToAction("Index", "Profile");
-            }
-            TempData["NotFoundProfile"] = "Cannot find your Preference. Please contact support to fix this issue";
-            return RedirectToAction("Index", "Profile");
-        }
-
-        public async Task<IActionResult> Address()
-        {
-            try
-            {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                var address = await _context.Address.FirstOrDefaultAsync(b => b.UserId == user.Id);
-                if (address != null)
-                {
-                    return View(address);
-                }
-            }
-            catch (Exception x)
-            {
-                TempData["ExceptionMessage"] = "An unexpected error has occurred while getting your Address. Please try again later. " + x.GetBaseException().Message;
-                return RedirectToAction("Index", "Profile");
-            }
-            TempData["NotFoundProfile"] = "Cannot find your Address. Please contact support to fix this issue";
-            return RedirectToAction("Index", "Profile");
-        } */
 
         public async Task<IActionResult> UpdateProfile()
         {
@@ -372,35 +313,6 @@ namespace ConestogaVirtualGameStore.Controllers
 
                 return View("UpdateAddress", address);
         }
-        /* [HttpPost]
-        public async Task<IActionResult> UpdateAddress([Bind("AddressModelId, UserId, MailingAddress, ShippingAddress, IsSame")] AddressModel address)
-        {
-            try
-            {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                AddressModel addr = await _context.Address.Where(a => a.UserId == user.Id).FirstOrDefaultAsync();
-                if (addr.UserId != address.UserId && addr.AddressModelId != address.AddressModelId)
-                {
-                    return NotFound();
-                }
-                if (ModelState.IsValid)
-                {
-                    addr.MailingAddress = address.MailingAddress;
-                    //addr.ShippingAddress = address.IsSame ? address.MailingAddress : address.ShippingAddress;
-                    addr.IsSame = address.IsSame;
-                    _context.Update(addr);
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "Preference Updated Successfully";
-                    return RedirectToAction("Address", "Profile");
-                }
-            } 
-            catch (Exception x)
-            {
-                TempData["ExceptionMessage"] = "An unexpected error has occurred while updating your address. Please try again later. " + x.GetBaseException().Message;
-                return RedirectToAction("Index", "Profile");
-            }
-            return View("UpdateAddress", address);
-        } */
 
         public bool IsDateValid(DateTime dob)
         {
