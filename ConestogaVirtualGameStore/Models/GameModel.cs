@@ -1,4 +1,5 @@
 ﻿using ConestogaVirtualGameStore.Classes;
+using ConestogaVirtualGameStore.CustomValidation;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,8 @@ namespace ConestogaVirtualGameStore.Models
         public Platforms Platform { get; set; }
         public string ImageName { get; set; }
         [NotMapped]
-        [DisplayName("Upload Game Image")]
+        [DisplayName("Upload Game Image. Allowed file formats(jpg,jpeg,png)")]
+        [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })]
         public IFormFile ImageFile { get; set; }
 
     }
