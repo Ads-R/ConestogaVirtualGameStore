@@ -7,7 +7,7 @@ namespace ConestogaVirtualGameStore.Models
     {
         public int AddressModelId { get; set; }
         public string UserId { get; set; }
-        [Display(Name ="Is same?")]
+        [Display(Name ="I have the same Mailing and Shipping Address")]
         public bool IsSame { get; set; }
 
 
