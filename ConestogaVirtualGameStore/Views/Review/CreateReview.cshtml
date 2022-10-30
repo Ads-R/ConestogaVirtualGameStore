@@ -1,0 +1,27 @@
+﻿@model ReviewModel
+@{
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="CreateReview" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="GameId" />
+            <div class="form-group">
+                <label asp-for="ReviewText" class="control-label"></label>
+                <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
+                <span asp-validation-for="ReviewText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+            </div>
+        </form>
+        <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.CreateBackUrl">Back to Game Details</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

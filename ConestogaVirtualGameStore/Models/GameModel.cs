@@ -1,6 +1,7 @@
 ﻿using ConestogaVirtualGameStore.Classes;
 using ConestogaVirtualGameStore.CustomValidation;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,6 +29,9 @@ namespace ConestogaVirtualGameStore.Models
         [DisplayName("Upload Game Image. Allowed file formats(jpg,jpeg,png)")]
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })]
         public IFormFile ImageFile { get; set; }
+
+
+        public ICollection<ReviewModel> Reviews { get; set; }
 
     }
 }

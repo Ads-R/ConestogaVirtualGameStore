@@ -2,6 +2,7 @@
 using ConestogaVirtualGameStore.Models;
 using ConestogaVirtualGameStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,15 @@ namespace ConestogaVirtualGameStore.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<HomeController> _logger;
         private readonly GameStoreContext _context;
 
-        public HomeController(ILogger<HomeController> logger, GameStoreContext context)
+        public HomeController(ILogger<HomeController> logger, GameStoreContext context, UserManager<ApplicationUser> uManager)
         {
             _logger = logger;
             _context = context;
+            userManager = uManager;
         }
 
         [AllowAnonymous]
@@ -61,8 +64,23 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 return NotFound();
             }
+            var reviewsModel = await _context.Reviews
+                .Include(b => b.User)
+                .Where(a => a.GameId == gameModel.Id && a.IsApproved == true).ToListAsync();
 
-            return View(gameModel);
+            GamesReviewsViewModel gamesReviewsModel = new GamesReviewsViewModel
+            {
+                Game = gameModel,
+                Review = reviewsModel
+            };
+
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                ViewBag.HasExistingReview = _context.Reviews.Any(a => a.UserId == user.Id && a.GameId == id);
+            }
+
+            return View(gamesReviewsModel);
         }
 
         public IActionResult Privacy()

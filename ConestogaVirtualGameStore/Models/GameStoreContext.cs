@@ -84,6 +84,21 @@ namespace ConestogaVirtualGameStore.Models
                 .HasOne<City>(a => a.City)
                 .WithMany(d => d.ShippingAddresses)
                 .HasForeignKey(e => e.ShipCity);
+            //Review composite FK as PK
+            builder.Entity<ReviewModel>()
+                .HasKey(a => new { a.UserId, a.GameId});
+            //Review Many to 1 relationship with Game
+            builder.Entity<ReviewModel>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.Reviews)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+            //Review Many to 1 relationship with User
+            builder.Entity<ReviewModel>()
+                .HasOne<GameModel>(a => a.Game)
+                .WithMany(d => d.Reviews)
+                .HasForeignKey(e => e.GameId)
+                .IsRequired();
 
             builder.Entity<ProfileModel>()
                 .Property(x => x.Gender)
@@ -111,5 +126,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<EventModel> Events { get; set; }
         public DbSet<MailingAddress> MailingAddresses { get; set; }
         public DbSet<ShippingAddress> ShippingAddresses { get; set; }
+        public DbSet<ReviewModel> Reviews { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.ReviewModel>
+@{
+    Layout = "_LayoutAdminPanel";
+}
+<span class="text-white bg-success">@TempData["ReviewSuccess"]</span>
+
+<h1>Reviews waiting for approval</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        <a asp-action="Index">Pending Reviews</a> | 
+        <a asp-action="ApprovedReviews">Approved Reviews</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateTime)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Game.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        <a asp-action="ReviewDetails" asp-route-UserId="@item.UserId" asp-route-GameId="@item.GameId">Evaluate Review</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+

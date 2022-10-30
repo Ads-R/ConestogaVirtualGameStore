@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ConestogaVirtualGameStore.Models
 {
@@ -7,5 +9,6 @@ namespace ConestogaVirtualGameStore.Models
         public virtual ProfileModel Profile { get; set; }
         public virtual PreferencesModel Preference { get; set; }
         public virtual AddressModel Address { get; set; }
+        public ICollection<ReviewModel> Reviews { get; set; }
     }
 }
