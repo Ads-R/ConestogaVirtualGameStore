@@ -42,15 +42,15 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             try
             {
-                ApplicationUser user = await userManager.GetUserAsync(User);
-                RatingModel rating = new RatingModel
-                {
-                    UserId = user.Id,
-                    GameId = rate.GameId,
-                    RatingScore = int.Parse(rate.RatingScore)
-                };
                 if (ModelState.IsValid)
                 {
+                    ApplicationUser user = await userManager.GetUserAsync(User);
+                    RatingModel rating = new RatingModel
+                    {
+                        UserId = user.Id,
+                        GameId = rate.GameId,
+                        RatingScore = int.Parse(rate.RatingScore)
+                    };
                     _context.Add(rating);
                     await _context.SaveChangesAsync();
                     TempData["RateSuccess"] = "Rating Score has been submitted successfully";
@@ -58,6 +58,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 }
                 else
                 {
+                    ViewBag.RateCreateBackUrl = rate.GameId;
                     return View(rate);
                 }
             }
@@ -113,6 +114,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 }
                 else
                 {
+                    ViewBag.RateEditBackUrl = rate.GameId;
                     return View(rate);
                 }
             }
