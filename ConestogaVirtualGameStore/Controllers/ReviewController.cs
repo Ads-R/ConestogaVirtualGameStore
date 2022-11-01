@@ -95,7 +95,7 @@ namespace ConestogaVirtualGameStore.Controllers
             if (review == null)
             {
                 TempData["RNotFound"] = "Cannot find the review you are trying to edit";
-                return Redirect($"/Home/GameDetails/{review.GameId}");
+                return Redirect($"/Home/GameDetails/{GameId}");
             }
             ViewBag.EditBackUrl = GameId;
             return View(review);

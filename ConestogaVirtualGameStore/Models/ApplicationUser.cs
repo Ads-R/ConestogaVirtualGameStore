@@ -10,5 +10,6 @@ namespace ConestogaVirtualGameStore.Models
         public virtual PreferencesModel Preference { get; set; }
         public virtual AddressModel Address { get; set; }
         public ICollection<ReviewModel> Reviews { get; set; }
+        public ICollection<RatingModel> Ratings { get; set; }
     }
 }

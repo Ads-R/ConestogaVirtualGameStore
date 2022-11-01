@@ -68,16 +68,23 @@ namespace ConestogaVirtualGameStore.Controllers
                 .Include(b => b.User)
                 .Where(a => a.GameId == gameModel.Id && a.IsApproved == true).ToListAsync();
 
-            GamesReviewsViewModel gamesReviewsModel = new GamesReviewsViewModel
+            var ratingsModel = await _context.Ratings
+                .Where(a => a.GameId == gameModel.Id).ToListAsync();
+
+            GamesReviewsRatingsViewModel gamesReviewsModel = new GamesReviewsRatingsViewModel
             {
                 Game = gameModel,
-                Review = reviewsModel
+                Review = reviewsModel,
+                ReviewCount = reviewsModel.Count,
+                RatingCount = ratingsModel.Count,
+                GameRatingScore = ratingsModel.Count == 0 ? 0:(double)ratingsModel.Sum(a => a.RatingScore)/ratingsModel.Count
             };
 
             ApplicationUser user = await userManager.GetUserAsync(User);
             if (user != null)
             {
                 ViewBag.HasExistingReview = _context.Reviews.Any(a => a.UserId == user.Id && a.GameId == id);
+                ViewBag.HasExistingRating = _context.Ratings.Any(b => b.UserId == user.Id && b .GameId == id);
             }
 
             return View(gamesReviewsModel);

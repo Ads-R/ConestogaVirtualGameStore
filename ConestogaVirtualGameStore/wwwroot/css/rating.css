@@ -1,0 +1,78 @@
+﻿@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+/*Credits to allenhe - @hesguru - codepen.io*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.RatingScore {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+    .RatingScore:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+    }
+
+    .RatingScore:not(:checked) > label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+        .RatingScore:not(:checked) > label:before {
+            content: '★ ';
+        }
+
+    .RatingScore > input:checked ~ label {
+        color: #ffc700;
+    }
+
+    .RatingScore:not(:checked) > label:hover,
+    .RatingScore:not(:checked) > label:hover ~ label {
+        color: #deb217;
+    }
+
+    .RatingScore > input:checked + label:hover,
+    .RatingScore > input:checked + label:hover ~ label,
+    .RatingScore > input:checked ~ label:hover,
+    .RatingScore > input:checked ~ label:hover ~ label,
+    .RatingScore > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
+
+/*End of Credits*/
+
+/*Credits to George Martsoukos - webdesign.tutsplus.com*/
+
+.stars-outer {
+    display: inline-block;
+    position: relative;
+    font-family: FontAwesome;
+}
+
+    .stars-outer::before {
+        content: "\f006 \f006 \f006 \f006 \f006";
+    }
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+    .stars-inner::before {
+        content: "\f005 \f005 \f005 \f005 \f005";
+        color: #f8ce0b;
+    }
+
+/*End of Credits*/

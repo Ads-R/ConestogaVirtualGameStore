@@ -87,16 +87,31 @@ namespace ConestogaVirtualGameStore.Models
             //Review composite FK as PK
             builder.Entity<ReviewModel>()
                 .HasKey(a => new { a.UserId, a.GameId});
-            //Review Many to 1 relationship with Game
+            //Review Many to 1 relationship with User
             builder.Entity<ReviewModel>()
                 .HasOne<ApplicationUser>(a => a.User)
                 .WithMany(d => d.Reviews)
                 .HasForeignKey(e => e.UserId)
                 .IsRequired();
-            //Review Many to 1 relationship with User
+            //Review Many to 1 relationship with Game
             builder.Entity<ReviewModel>()
                 .HasOne<GameModel>(a => a.Game)
                 .WithMany(d => d.Reviews)
+                .HasForeignKey(e => e.GameId)
+                .IsRequired();
+            //Rating composite FK as PK
+            builder.Entity<RatingModel>()
+                .HasKey(a => new {a.UserId, a.GameId});
+            //Rating Many to 1 relationship with User
+            builder.Entity<RatingModel>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.Ratings)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+            //Rating Many to 1 relationship with Game
+            builder.Entity<RatingModel>()
+                .HasOne<GameModel>(a => a.Game)
+                .WithMany(d => d.Ratings)
                 .HasForeignKey(e => e.GameId)
                 .IsRequired();
 
@@ -127,5 +142,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<MailingAddress> MailingAddresses { get; set; }
         public DbSet<ShippingAddress> ShippingAddresses { get; set; }
         public DbSet<ReviewModel> Reviews { get; set; }
+        public DbSet<RatingModel> Ratings { get; set; }
     }
 }

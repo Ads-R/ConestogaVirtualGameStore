@@ -1,0 +1,41 @@
+﻿@using ConestogaVirtualGameStore.Models.ViewModels
+@model RatingViewModel
+@{
+}
+<link href="~/css/rating.css" rel="stylesheet" />
+<html>
+<body>
+    <h1>Change Rating</h1>
+    <br />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.Raw("The previous score you gave for this game: ")
+                </dt>
+            <dd class="col-sm-1" style="color:green;">
+                @Html.Raw(Model.RatingScore)
+                </dd>
+            </dl>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <form asp-action="ChangeRating" method="post">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="GameId" />
+        <div class="RatingScore">
+            <input type="radio" asp-for="RatingScore" id="star5" value="5" />
+            <label for="star5" title="5">5 stars</label>
+            <input type="radio" asp-for="RatingScore" id="star4" value="4" />
+            <label for="star4" title="4">4 stars</label>
+            <input type="radio" asp-for="RatingScore" id="star3" value="3" />
+            <label for="star3" title="3">3 stars</label>
+            <input type="radio" asp-for="RatingScore" id="star2" value="2" />
+            <label for="star2" title="2">2 stars</label>
+            <input type="radio" asp-for="RatingScore" id="star1" value="1" />
+            <label for="star1" title="1">1 star</label>
+        </div>
+        <br /><br /><br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.RateEditBackUrl" class="btn btn-secondary">Back to Game Details</a>
+    </form>
+</body>
+</html>
