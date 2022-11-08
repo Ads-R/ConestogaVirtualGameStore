@@ -13,7 +13,7 @@
                 <span asp-validation-for="ReviewText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-primary" />
+                <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />
             </div>
         </form>
         <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.CreateBackUrl">Back to Game Details</a>

@@ -1,4 +1,5 @@
-﻿@using ConestogaVirtualGameStore.Models.ViewModels
+﻿@using ConestogaVirtualGameStore.Classes
+@using ConestogaVirtualGameStore.Models.ViewModels
 @model GameSearchViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -19,11 +20,17 @@
 
 <form asp-action="Index" asp-controller="Home" method="GET">
     <p>
-        Search by Title: <input type="text" name="search" />
-        Category: <select asp-for="GameCategory" asp-items="Model.Categories">
-            <option value="">All</option>
+        Search by Title: <input type="text" id="txtSearch" name="search" />
+        Category: 
+        
+        <select asp-for="GameCategory">
+            <option id="All" value="">All</option>
+            @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
+            {
+                <option id="@Enum.GetName(typeof(Genre), x)" value="@Enum.GetName(typeof(Genre), x)">@Enum.GetName(typeof(Genre), x)</option>
+            }
         </select>
-        <input type="submit" value="Search" />
+        <input type="submit" id="btnSearch" value="Search" />
     </p>
 </form>
 
