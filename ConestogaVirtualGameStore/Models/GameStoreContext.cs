@@ -114,6 +114,16 @@ namespace ConestogaVirtualGameStore.Models
                 .WithMany(d => d.Ratings)
                 .HasForeignKey(e => e.GameId)
                 .IsRequired();
+            //CreditCard Many to 1 relationship with User
+            builder.Entity<CreditCardModel>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.CreditCards)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+            //Credit Card unique credit card number
+            builder.Entity<CreditCardModel>()
+                .HasIndex(e => e.CreditCardNumber)
+                .IsUnique();
 
             builder.Entity<ProfileModel>()
                 .Property(x => x.Gender)
@@ -141,6 +151,7 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<EventModel> Events { get; set; }
         public DbSet<MailingAddress> MailingAddresses { get; set; }
         public DbSet<ShippingAddress> ShippingAddresses { get; set; }
+        public DbSet<CreditCardModel> CreditCards { get; set; }
         public DbSet<ReviewModel> Reviews { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
     }

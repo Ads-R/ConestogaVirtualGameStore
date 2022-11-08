@@ -1,5 +1,6 @@
 using ConestogaVirtualGameStore.Data;
 using ConestogaVirtualGameStore.Models;
+using ConestogaVirtualGameStore.Services;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,6 +60,8 @@ namespace ConestogaVirtualGameStore
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<ICreditCardService, CreditCardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
