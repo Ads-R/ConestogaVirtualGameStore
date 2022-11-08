@@ -25,7 +25,7 @@
         
         <select asp-for="GameCategory">
             <option id="All" value="">All</option>
-            @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
+            @for (int x = 0; x < Enum.GetNames(typeof(Genre)).Length; x++)
             {
                 <option id="@Enum.GetName(typeof(Genre), x)" value="@Enum.GetName(typeof(Genre), x)">@Enum.GetName(typeof(Genre), x)</option>
             }
