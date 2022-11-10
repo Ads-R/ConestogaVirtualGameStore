@@ -68,19 +68,19 @@
         {
             if (ViewBag.HasExistingReview)
             {
-                <a asp-controller="Review" asp-action="EditReview" asp-route-GameId="@Model.Game.Id" class=" btn btn-primary">Edit Review</a>
+                <a id="btnEditReview" asp-controller="Review" asp-action="EditReview" asp-route-GameId="@Model.Game.Id" class="btn btn-primary">Edit Review</a>
             }
             else
             {
-                <a asp-controller="Review" asp-action="CreateReview" asp-route-GameId="@Model.Game.Id" class=" btn btn-primary">Write a Review</a>
+                <a asp-controller="Review" asp-action="CreateReview" asp-route-GameId="@Model.Game.Id" id="btnWriteReview" class=" btn btn-primary">Write a Review</a>
             }
             if (ViewBag.HasExistingRating)
             {
-                <a asp-controller="Rating" asp-action="ChangeRating" asp-route-GameId="@Model.Game.Id" class=" btn btn-primary">Change Rating</a>
+                <a asp-controller="Rating" asp-action="ChangeRating" asp-route-GameId="@Model.Game.Id" id="btnChangeRating" class=" btn btn-primary">Change Rating</a>
             }
             else
             {
-                <a asp-controller="Rating" asp-action="RateGame" asp-route-GameId="@Model.Game.Id" class=" btn btn-primary">Rate Game</a>
+                <a asp-controller="Rating" asp-action="RateGame" asp-route-GameId="@Model.Game.Id" id="btnRateGame"  class="btn btn-primary">Rate Game</a>
             }
         }
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
