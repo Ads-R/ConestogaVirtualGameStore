@@ -1,13 +1,13 @@
 ﻿@model ReviewModel
 @{
 }
-<div>
+<div class="container">
     <dl class="row">
 
-        <dt class="col-sm-2">
+        <dt class="col">
             @Html.Raw("Review Status: ")
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 justify-content-start">
             @if(Model.IsApproved){
                 @Html.Raw("Approved");
             }
@@ -15,37 +15,39 @@
                 @Html.Raw("Pending Evaluation");
             }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col">
             @Html.DisplayNameFor(model => model.DateTime)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 justify-content-start">
             @Html.DisplayFor(model => model.DateTime)
         </dd>
 
     </dl>
 </div>
-<div class="row">
-    <div class="col-md-10">
-        <form asp-action="EditReview" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="GameId" />
-            <div class="form-group">
-                <label asp-for="ReviewText" class="control-label"></label>
-                <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
-                <span asp-validation-for="ReviewText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-primary" />
-            </div>
-        </form>
-        <form asp-action="DeleteReview">
-            <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="GameId" />
-            <input type="submit" value="Delete" class="btn btn-danger" />
-            <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl">Back to Game Details</a>
-        </form>
-    </div>
+<div class="container">
+    
+            <form asp-action="EditReview" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="GameId" />
+                <div class="form-group">
+                    <label asp-for="ReviewText" class="control-label"></label>
+                    <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
+                    <span asp-validation-for="ReviewText" class="text-danger"></span>
+                </div>
+                
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+             
+            </form>
+           <div style="line-height:3.5px"><br /></div>
+   
+            <form  asp-action="DeleteReview">
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="GameId" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl" class="btn btn-secondary">Back to Game Details</a>
+            </form>
+    
 </div>
 
 @section Scripts {
