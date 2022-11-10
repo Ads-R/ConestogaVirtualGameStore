@@ -45,6 +45,7 @@ namespace ConestogaVirtualGameStore.Controllers
             }
             var gameVM = new GameSearchViewModel
             {
+                SearchString = search,
                 Categories = category,
                 Games = await game.ToListAsync()
             };
