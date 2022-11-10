@@ -15,20 +15,20 @@
     <label class="font-weight-bold font-italic" asp-for="Platform"></label><br />
     @for (int x = 0; x < Enum.GetNames(typeof(Platforms)).Length; x++)
     {
-        <input name="Platform" type="checkbox" value="@Enum.GetName(typeof(Platforms), x)" @(Model.Platform == null ? "": Model.Platform.Contains(Enum.GetName(typeof(Platforms), x)) ? "checked='checked'" : "") /> @Enum.GetName(typeof(Platforms), x) <br /><br />
-            }
+        <input name="Platform" type="checkbox" id="@Enum.GetName(typeof(Platforms), x)" value="@Enum.GetName(typeof(Platforms), x)" @(Model.Platform == null ? "": Model.Platform.Contains(Enum.GetName(typeof(Platforms), x)) ? "checked='checked'" : "") /> @Enum.GetName(typeof(Platforms), x) <br /><br />
+    }
         </div>
         <div class="col">
 
     <label class="font-weight-bold font-italic" asp-for="Category"></label><br />
     @for (int x = 0; x < Enum.GetNames(typeof(Genre)).Length; x++)
     {
-        <input name="Category" type="checkbox" value="@Enum.GetName(typeof(Genre), x)" @(Model.Category == null ? "": (Model.Category.Contains(Enum.GetName(typeof(Genre), x))) ? "checked='checked'" : "")) /> @Enum.GetName(typeof(Genre), x) <br /><br />
+        <input name="Category" type="checkbox" id="@Enum.GetName(typeof(Genre), x)" value="@Enum.GetName(typeof(Genre), x)" @(Model.Category == null ? "": (Model.Category.Contains(Enum.GetName(typeof(Genre), x))) ? "checked='checked'" : "")) /> @Enum.GetName(typeof(Genre), x) <br /><br />
     }
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-primary" id="btnSave">Save Changes</button>
 </form>
 
 <br />

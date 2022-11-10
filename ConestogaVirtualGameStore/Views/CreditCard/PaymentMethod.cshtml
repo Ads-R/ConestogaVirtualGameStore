@@ -1,0 +1,104 @@
+﻿@model ConestogaVirtualGameStore.Models.ViewModels.CreditCardViewModel
+@{
+    Layout = "_LayoutMemberPanel";
+}
+
+<span class="text-white bg-danger">@TempData["CCException"]</span>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Raw("Credit Card Number")
+            </th>
+            <th>
+                @Html.Raw("Expiry Date")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.UserCards)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(item.CreditCardNumber)
+                </td>
+                <td>
+                    @String.Format("{0:y}", item.ExpiryDate)
+                </td>
+                <td>
+                    <a asp-action="DeleteCard" asp-route-UserId="@item.UserId" asp-route-CardNumber="@item.CreditCardNumber">Delete Card</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1>Add a Credit Card</h1>
+
+<form asp-action="PaymentMethod">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="CreditCardNumber" class="control-label"></label>
+        <input asp-for="CreditCardNumber" class="form-control" />
+        <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExpiryMonth" class="control-label"></label>
+        <select asp-for="ExpiryMonth" class="form-control">
+            <option value="">Select Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ExpiryYear" class="control-label"></label>
+        <select asp-for="ExpiryYear" class="form-control">
+            <option value="">Select Year</option>
+            @for (int x = 2015; x <= 2030; x++)
+            {
+                <option value="@x">@x</option>
+            }
+        </select>
+        <span asp-validation-for="ExpiryYear" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SecurityCode" class="control-label"></label>
+        <input asp-for="SecurityCode" class="form-control" />
+        <span asp-validation-for="SecurityCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Add Card" class="btn btn-primary" />
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

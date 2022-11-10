@@ -81,7 +81,7 @@
             <hr class="sidebar-divider">
             <!-- Nav Item - Selecting game -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdatePreference">
+                <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdatePreference" id="NavSideBarPreference">
                     <i class="fas fa-fw fa-bookmark"></i>
                     <span>Preference</span>
                 </a>
@@ -95,6 +95,15 @@
                 <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="UpdateAddress">
                     <i class="fas fa-fw fa-address-book"></i>
                     <span>Address</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="CreditCard" asp-action="PaymentMethod">
+                    <i class="fas fa-fw fa-address-book"></i>
+                    <span>Payment Method</span>
                 </a>
             </li>
             

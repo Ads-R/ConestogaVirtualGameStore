@@ -9,8 +9,9 @@ namespace ConestogaVirtualGameStore.Models
         public string UserId { get; set; }
         public int GameId { get; set; }
         [Required]
+        [Display(Name = "Review Text:")]
         public string ReviewText { get; set; }
-        [Display(Name ="Last Modified")]
+        [Display(Name ="Last Modified:")]
         [DisplayFormat(DataFormatString = "{0:g}")]
         public DateTime DateTime { get; set; }
         public bool IsApproved { get; set; }
