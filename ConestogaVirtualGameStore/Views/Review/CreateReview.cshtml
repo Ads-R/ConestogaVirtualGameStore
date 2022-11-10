@@ -12,16 +12,11 @@
                 <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
                 <span asp-validation-for="ReviewText" class="text-danger"></span>
             </div>
-<<<<<<< HEAD
-            
+
             <div class="input-group-prepend">
-                <input type="submit" value="Save Changes" class="btn btn-primary" />&nbsp;
+                <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />&nbsp;
                 <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.CreateBackUrl" class="btn btn-secondary">Back to Game Details</a>
-=======
-            <div class="form-group">
-                <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />
->>>>>>> 4e493ecd0191ce16d53c2738f121751807b09d99
-            </div>
+
             
         </form>
 

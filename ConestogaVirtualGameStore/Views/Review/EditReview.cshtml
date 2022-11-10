@@ -24,7 +24,7 @@
 
     </dl>
 </div>
-<<<<<<< HEAD
+
 <div class="container">
     
             <form asp-action="EditReview" method="post">
@@ -36,8 +36,8 @@
                     <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
                     <span asp-validation-for="ReviewText" class="text-danger"></span>
                 </div>
-                
-                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+
+        <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />
              
             </form>
            <div style="line-height:3.5px"><br /></div>
@@ -45,34 +45,10 @@
             <form  asp-action="DeleteReview">
                 <input type="hidden" asp-for="UserId" />
                 <input type="hidden" asp-for="GameId" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
+        <input type="submit" value="Delete" id="btnDelete" class="btn btn-danger" />
                 <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl" class="btn btn-secondary">Back to Game Details</a>
             </form>
     
-=======
-<div class="row">
-    <div class="col-md-10">
-        <form asp-action="EditReview" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="GameId" />
-            <div class="form-group">
-                <label asp-for="ReviewText" class="control-label"></label>
-                <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
-                <span asp-validation-for="ReviewText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />
-            </div>
-        </form>
-        <form asp-action="DeleteReview">
-            <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="GameId" />
-            <input type="submit" value="Delete" id="btnDelete" class="btn btn-danger" />
-            <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl">Back to Game Details</a>
-        </form>
-    </div>
->>>>>>> 4e493ecd0191ce16d53c2738f121751807b09d99
 </div>
 
 @section Scripts {
