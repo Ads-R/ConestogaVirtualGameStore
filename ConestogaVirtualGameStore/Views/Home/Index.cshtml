@@ -18,9 +18,9 @@
 <span class="text-white bg-danger">@TempData["RException"]</span>
 <span class="text-white bg-danger">@TempData["RateException"]</span>
 
-<form asp-action="Index" asp-controller="Home" method="GET">
-    <p>
-        Search by Title: <input type="text" id="txtSearch" name="search" />
+<form asp-action="Index" asp-controller="Home" method="GET" style="display:inline;">
+    <p style="display:inline;">
+        Search by Title: <input type="text" id="txtSearch" name="search" value="@Model.SearchString" />
         Category: 
         
         <select asp-for="GameCategory">
@@ -33,7 +33,9 @@
         <input type="submit" id="btnSearch" value="Search" />
     </p>
 </form>
-
+<form asp-action="Index" asp-controller="Home" method="GET" style="display:inline;">
+    <input type="submit" value="Clear" style="margin-left:10px;" />
+    </form>
 <div class="row">
         @foreach (var item in Model.Games)
         {

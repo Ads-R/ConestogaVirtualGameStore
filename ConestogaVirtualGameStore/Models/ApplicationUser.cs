@@ -12,5 +12,8 @@ namespace ConestogaVirtualGameStore.Models
         public ICollection<ReviewModel> Reviews { get; set; }
         public ICollection<RatingModel> Ratings { get; set; }
         public ICollection<CreditCardModel> CreditCards { get; set; }
+        public ICollection<FriendModel> UserFriend { get; set; }
+        public ICollection<FriendModel> Friend { get; set; }
+
     }
 }

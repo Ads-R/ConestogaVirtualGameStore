@@ -125,6 +125,21 @@ namespace ConestogaVirtualGameStore.Models
                 .HasIndex(e => e.CreditCardNumber)
                 .IsUnique();
 
+            //FriendList relationship
+            builder.Entity<FriendModel>()
+                .HasKey(a => new { a.UserId, a.FriendId });
+            builder.Entity<FriendModel>()
+                .HasOne(a => a.User)
+                .WithMany(c => c.UserFriend)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<FriendModel>()
+                .HasOne(a => a.Friend)
+                .WithMany(c => c.Friend)
+                .HasForeignKey(b => b.FriendId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             builder.Entity<ProfileModel>()
                 .Property(x => x.Gender)
                 .HasConversion<string>()
@@ -154,5 +169,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<CreditCardModel> CreditCards { get; set; }
         public DbSet<ReviewModel> Reviews { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
+        public DbSet<FriendModel> Friends { get; set; }
     }
 }

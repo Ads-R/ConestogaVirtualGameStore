@@ -1,0 +1,143 @@
+﻿@model ConestogaVirtualGameStore.Models.ViewModels.FriendSearchViewModel
+@{
+    Layout = "_LayoutMemberPanel";
+}
+
+<span class="text-white bg-danger">@TempData["FException"]</span>
+
+<form asp-action="Index" asp-controller="Friend" method="GET">
+
+    <p>
+        Find Friend: <input type="text" name="search" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Raw("Username")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @if (!Model.AllFriends.Any(a => a == item.Id))
+                        {
+                            <form asp-action="AddFriend">
+                                <input type="hidden" name="userId" value="@item.Id" />
+                                <input type="submit" value="Add Friend" class="btn btn-primary" />
+                            </form>
+                            @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>My Friends List</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Raw("Username")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AcceptedFriends)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <form asp-action="DeleteFriend">
+                            <input type="hidden" name="friendId" value="@item.Id" />
+                            <input type="submit" value="Unfriend" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col">
+        <h4>Pending Friends</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Raw("Username")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PendingApproval)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            <form asp-action="AcceptFriend" style="display:inline;">
+                                <input type="hidden" name="requesterId" value="@item.Id" />
+                                <input type="submit" value="Accept Friend" class="btn btn-primary" />
+                            </form>
+                            @*  <a asp-action="AcceptFriend" asp-route-RequesterId="@item.Id" asp-route-UserId="@Model.UserId" class="btn btn-primary">Accept Friend</a> *@
+                            <form asp-action="DeclineFriend" style="display:inline;">
+                                <input type="hidden" name="requesterId" value="@item.Id" />
+                                <input type="submit" value="Decline" class="btn btn-danger" />
+                            </form>
+                            @* <a asp-action="DeclineFriend" asp-route-RequesterId="@item.Id" asp-route-UserId="@Model.UserId" class="btn btn-danger">Decline</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="col">
+        <h4>Pending Requests</h4>
+            <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Raw("Username")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PendingRequest)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                            <form asp-action="CancelRequest">
+                                <input type="hidden" name="friendId" value="@item.Id" />
+                                <input type="submit" value="Cancel Request" class="btn btn-danger" />
+                            </form>
+                            @* <a asp-action="CancelRequest" asp-route-UserId="@Model.UserId" asp-route-FriendId="@item.Id" class="btn btn-danger">Cancel Request</a> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
