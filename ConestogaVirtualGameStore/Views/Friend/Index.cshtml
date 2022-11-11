@@ -14,11 +14,12 @@
 </form>
 
 <div>
-    <table class="table">
+    <h4>Search Result</h4>
+    <table class="table card" style="width:50%">
         <thead>
             <tr>
                 <th>
-                    @Html.Raw("Username")
+                <u>@Html.Raw("Username")</u>
                 </th>
             </tr>
         </thead>
@@ -44,14 +45,15 @@
         </tbody>
     </table>
 </div>
+<br />
 
 <div>
     <h4>My Friends List</h4>
-    <table class="table">
+    <table class="table card" style="width:50%">
         <thead>
             <tr>
                 <th>
-                    @Html.Raw("Username")
+                <u>@Html.Raw("Username")</u>
                 </th>
             </tr>
         </thead>
@@ -73,15 +75,15 @@
         </tbody>
     </table>
 </div>
-
+<br />
 <div class="row">
     <div class="col">
         <h4>Pending Friends</h4>
-        <table class="table">
+        <table class="table card">
             <thead>
                 <tr>
                     <th>
-                        @Html.Raw("Username")
+                    <u>@Html.Raw("Username")</u>
                     </th>
                 </tr>
             </thead>
@@ -109,15 +111,15 @@
             </tbody>
         </table>
     </div>
-
+   
 
     <div class="col">
         <h4>Pending Requests</h4>
-            <table class="table">
+            <table class="table card">
         <thead>
             <tr>
                 <th>
-                    @Html.Raw("Username")
+                    <u>@Html.Raw("Username")</u>
                 </th>
             </tr>
         </thead>
@@ -128,10 +130,11 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
+                   
                     <td>
                             <form asp-action="CancelRequest">
                                 <input type="hidden" name="friendId" value="@item.Id" />
-                                <input type="submit" value="Cancel Request" class="btn btn-danger" />
+                                <div><input type="submit" value="Cancel Request" class="btn btn-danger" /></div>
                             </form>
                             @* <a asp-action="CancelRequest" asp-route-UserId="@Model.UserId" asp-route-FriendId="@item.Id" class="btn btn-danger">Cancel Request</a> *@
                     </td>
