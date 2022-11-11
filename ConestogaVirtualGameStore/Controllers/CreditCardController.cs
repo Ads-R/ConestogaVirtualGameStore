@@ -34,16 +34,19 @@ namespace ConestogaVirtualGameStore.Controllers
             try
             {
                 ApplicationUser user = await userManager.GetUserAsync(User);
-                bool IsCardValid = _creditCardService.IsDateValid(creditCard);
-                if (!IsCardValid)
-                {
-                    ModelState.AddModelError("", "Credit Card has expired");
-                }
                 if (ModelState.IsValid)
                 {
-                    _creditCardService.AddCreditCard(creditCard, user.Id);
-                    TempData["CCSuccess"] = "Credit Card added successfully";
-                    return RedirectToAction("PaymentMethod");
+                    bool IsCardValid = _creditCardService.IsDateValid(creditCard);
+                    if (!IsCardValid)
+                    {
+                        ModelState.AddModelError("", "Credit Card has expired");
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        _creditCardService.AddCreditCard(creditCard, user.Id);
+                        TempData["CCSuccess"] = "Credit Card added successfully";
+                        return RedirectToAction("PaymentMethod");
+                    }
                 }
                 var creditCards = await _creditCardService.GetAllCreditCards(user.Id);
                 ViewBag.UserCards = creditCards;

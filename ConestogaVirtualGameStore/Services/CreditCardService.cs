@@ -84,9 +84,16 @@ namespace ConestogaVirtualGameStore.Services
         public bool IsDateValid(CreditCardViewModel card)
         {
             DateTime expiryDate = SetExpiryDate(card.ExpiryMonth, card.ExpiryYear);
-            if (expiryDate > DateTime.Today)
+            if (expiryDate.Year > DateTime.Now.Year)
             {
                 return true;
+            }
+            else if (expiryDate.Year == DateTime.Now.Year)
+            {
+                if (expiryDate.Month >= DateTime.Now.Month)
+                {
+                    return true;
+                }
             }
             return false;
         }
