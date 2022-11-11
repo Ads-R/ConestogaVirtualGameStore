@@ -11,26 +11,26 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EventName" class="control-label"></label>
-                <input asp-for="EventName" class="form-control" />
+                <input asp-for="EventName" class="form-control" id="txtEventName"/>
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EventStartDate" class="control-label"></label>
-                <input asp-for="EventStartDate" class="form-control" />
+                <input asp-for="EventStartDate" class="form-control" id="txtEventStartDate"/>
                 <span asp-validation-for="EventStartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EventEndDate" class="control-label"></label>
-                <input asp-for="EventEndDate" class="form-control" />
+                <input asp-for="EventEndDate" class="form-control" id="txtEventEndDate"/>
                 <span asp-validation-for="EventEndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EventDescription" class="control-label"></label>
-                <textarea asp-for="EventDescription" class="form-control" ></textarea>
+                <textarea asp-for="EventDescription" class="form-control" id="txtEventDescription"></textarea>
                 <span asp-validation-for="EventDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add Event" class="btn btn-primary" />
+                <input type="submit" value="Add Event" class="btn btn-primary" id="btnAddEvent"/>
             </div>
         </form>
     </div>
