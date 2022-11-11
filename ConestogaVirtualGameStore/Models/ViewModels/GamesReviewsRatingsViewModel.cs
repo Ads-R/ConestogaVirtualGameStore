@@ -9,5 +9,6 @@ namespace ConestogaVirtualGameStore.Models.ViewModels
         public int ReviewCount { get; set; }
         public double GameRatingScore { get; set; }
         public int RatingCount { get; set; }
+        public string RatingScore { get; set; }
     }
 }
