@@ -80,7 +80,7 @@ namespace ConestogaVirtualGameStore.Services
 
         public IQueryable<ApplicationUser> SearchUsers(string searchString, string userName)
         {
-            return _context.Users.Where(a => a.UserName.Contains(searchString)).Where(b => b.UserName != userName);
+            return _context.Users.Where(a => a.UserName.Contains(searchString)).Where(b => b.UserName != userName).Where(c => c.UserName != "Admin");
         }
         //////////////////////////////////////////////////////////////////////////////////////////
         public async Task<IEnumerable<ApplicationUser>> GetAllAcceptedFriends(string userId)
