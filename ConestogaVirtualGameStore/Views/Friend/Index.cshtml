@@ -6,45 +6,52 @@
 <span class="text-white bg-danger">@TempData["FException"]</span>
 
 <form asp-action="Index" asp-controller="Friend" method="GET">
-
+    <input type="hidden" name="ise" value="t"/>
     <p>
-        Find Friend: <input type="text" name="search" />
+        Find Friend: <input type="text" name="search" value="@Model.SearchString" />
         <input type="submit" value="Search" />
     </p>
 </form>
-
-<div>
-    <h4>Search Result</h4>
-    <table class="table card" style="width:50%">
-        <thead>
-            <tr>
-                <th>
-                <u>@Html.Raw("Username")</u>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Users)
-            {
+@if(Model.Users.Count == 0){
+    if(ViewBag.IsSearching != null){
+        <h4>Search Result</h4>
+        <p>The search did not find any user with the name "@Model.SearchString"</p>
+    }
+}
+else{
+    <div>
+        <h4>Search Result</h4>
+        <table class="table card" style="width:50%">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td>
-                        @if (!Model.AllFriends.Any(a => a == item.Id))
-                        {
-                            <form asp-action="AddFriend">
-                                <input type="hidden" name="userId" value="@item.Id" />
-                                <input type="submit" value="Add Friend" class="btn btn-primary" />
-                            </form>
-                            @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
-                        }
-                    </td>
+                    <th>
+                        <u>@Html.Raw("Username")</u>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @if (!Model.AllFriends.Any(a => a == item.Id))
+                            {
+                                <form asp-action="AddFriend">
+                                    <input type="hidden" name="userId" value="@item.Id" />
+                                    <input type="submit" value="Add Friend" class="btn btn-primary" />
+                                </form>
+                                @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
 <br />
 
 <div>

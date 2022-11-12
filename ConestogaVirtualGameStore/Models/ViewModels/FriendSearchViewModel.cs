@@ -10,5 +10,6 @@ namespace ConestogaVirtualGameStore.Models.ViewModels
         public List<ApplicationUser>? AcceptedFriends { get; set; }
         public List<ApplicationUser>? PendingApproval { get; set; }
         public List<ApplicationUser>? PendingRequest { get; set; }
+        public string? SearchString { get; set; }
     }
 }

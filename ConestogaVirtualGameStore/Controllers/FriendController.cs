@@ -21,7 +21,7 @@ namespace ConestogaVirtualGameStore.Controllers
             _friendService = friendService;
             userManager = uManager;
         }
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, string ise)
         {
             ApplicationUser user = await userManager.GetUserAsync(User);
             var searchResults = Enumerable.Empty<ApplicationUser>().AsQueryable();
@@ -44,9 +44,10 @@ namespace ConestogaVirtualGameStore.Controllers
                 AllFriends = all.ToList(),
                 AcceptedFriends = accepted.ToList(),
                 PendingApproval = pendingApproval.ToList(),
-                PendingRequest = pendingRequest.ToList()
+                PendingRequest = pendingRequest.ToList(),
+                SearchString = search
             };
-
+            ViewBag.IsSearching = ise;
             return View(friend);
         }
 
