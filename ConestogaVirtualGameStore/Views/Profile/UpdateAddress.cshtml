@@ -20,50 +20,50 @@
         <div class="col">
             <div class="form-group">
                 <label asp-for="MailingAddress.MailAddress1"></label>
-                <input asp-for="MailingAddress.MailAddress1" class="form-control" id="txtMailAddress1" />
+                <input asp-for="MailingAddress.MailAddress1" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="MailingAddress.MailAddress2"></label>
-                <input asp-for="MailingAddress.MailAddress2" class="form-control" id="txtMailAddress2"/>
+                <input asp-for="MailingAddress.MailAddress2" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="MailingAddress.MailCountry"></label>
-                <select asp-for="MailingAddress.MailCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control" id="txtMailCountry"></select>
+                <select asp-for="MailingAddress.MailCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="MailingAddress.MailProvince"></label>
-                <select asp-for="MailingAddress.MailProvince" asp-items="@(new SelectList(@ViewBag.MailProvince, "ProvinceId", "ProvinceName"))" class="form-control" id="txtMailProvince"></select>
+                <select asp-for="MailingAddress.MailProvince" asp-items="@(new SelectList(@ViewBag.MailProvince, "ProvinceId", "ProvinceName"))" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="MailingAddress.MailCity"></label>
-                <select asp-for="MailingAddress.MailCity" asp-items="@(new SelectList(@ViewBag.MailCity, "CityId", "CityName"))" class="form-control" id="txtMailCity"></select>
+                <select asp-for="MailingAddress.MailCity" asp-items="@(new SelectList(@ViewBag.MailCity, "CityId", "CityName"))" class="form-control"></select>
             </div>
         </div>
         <div class="col">
             <div class="form-group">
                 <label asp-for="ShippingAddress.ShipAddress1"></label>
-                <input asp-for="ShippingAddress.ShipAddress1" class="form-control" id="txtShipAddress1"/>
+                <input asp-for="ShippingAddress.ShipAddress1" class="form-control"/>
             </div>
             <div class="form-group">
                 <label asp-for="ShippingAddress.ShipAddress2"></label>
-                <input asp-for="ShippingAddress.ShipAddress2" class="form-control" id="txtShipAddress2"/>
+                <input asp-for="ShippingAddress.ShipAddress2" class="form-control"/>
             </div>
             <div class="form-group">
                 <label asp-for="ShippingAddress.ShipCountry"></label>
-                <select asp-for="ShippingAddress.ShipCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control" id="txtShipCountry"></select>
+                <select asp-for="ShippingAddress.ShipCountry" asp-items="@(new SelectList(@ViewBag.Country, "CountryId", "CountryName"))" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ShippingAddress.ShipProvince"></label>
-                <select asp-for="ShippingAddress.ShipProvince" asp-items="@(new SelectList(ViewBag.ShipProvince, "ProvinceId", "ProvinceName"))" class="form-control" id="txtShipProvince"></select>
+                <select asp-for="ShippingAddress.ShipProvince" asp-items="@(new SelectList(ViewBag.ShipProvince, "ProvinceId", "ProvinceName"))" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ShippingAddress.ShipCity"></label>
-                <select asp-for="ShippingAddress.ShipCity" asp-items="@(new SelectList(@ViewBag.ShipCity, "CityId", "CityName"))" class="form-control" id="txtShipCity"></select>
+                <select asp-for="ShippingAddress.ShipCity" asp-items="@(new SelectList(@ViewBag.ShipCity, "CityId", "CityName"))" class="form-control"></select>
             </div>
         </div>
     </div>
     <div class="form-check">
-        <input asp-for="IsSame" class="form-check-input" onchange="chkLock()" id="chkAddress" />
+        <input asp-for="IsSame" class="form-check-input" onchange="chkLock()" />
         <label asp-for="IsSame" class="form-check-label"></label>
     </div>
     <br /> <br />
