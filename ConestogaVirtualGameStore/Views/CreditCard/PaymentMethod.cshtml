@@ -2,7 +2,7 @@
 @{
     Layout = "_LayoutMemberPanel";
 }
-
+<span class="text-white bg-success" id="creditSuccess">@TempData["CCSuccess"]</span>
 <span class="text-white bg-danger">@TempData["CCException"]</span>
 
 <table class="table">
@@ -44,47 +44,47 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="CreditCardNumber" class="control-label"></label>
-        <input asp-for="CreditCardNumber" class="form-control"/>
+        <input asp-for="CreditCardNumber" class="form-control" id="cardNumberId"/>
         <p style="color:lightgreen; font-style:italic;">Allowed Credit Cards: VISA, MasterCard, Discovery</p>
-        <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
+        <span asp-validation-for="CreditCardNumber" class="text-danger" id="cardNumberError"></span>
     </div>
     <div class="form-group">
         <label asp-for="FirstName" class="control-label"></label>
-        <input asp-for="FirstName" class="form-control" />
+        <input asp-for="FirstName" class="form-control" id="firstNameId" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="LastName" class="control-label"></label>
-        <input asp-for="LastName" class="form-control" />
+        <input asp-for="LastName" class="form-control" id="lastNameId" />
         <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="ExpiryMonth" class="control-label"></label>
-        <select asp-for="ExpiryMonth" class="form-control">
+        <select asp-for="ExpiryMonth" class="form-control" id="monthId">
             <option value="">Select Month</option>
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <option value="1" id="January">January</option>
+            <option value="2" id="February">February</option>
+            <option value="3" id="March">March</option>
+            <option value="4" id="April">April</option>
+            <option value="5" id="May">May</option>
+            <option value="6" id="June">June</option>
+            <option value="7" id="July">July</option>
+            <option value="8" id="August">August</option>
+            <option value="9" id="September">September</option>
+            <option value="10" id="October">October</option>
+            <option value="11" id="November">November</option>
+            <option value="12" id="December">December</option>
         </select>
         <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="ExpiryYear" class="control-label"></label>
-        <select asp-for="ExpiryYear" class="form-control">
+        <select asp-for="ExpiryYear" class="form-control" id="yearId">
             <option value="">Select Year</option>
             @for (int x = 2015; x <= 2030; x++)
             {
-                <option value="@x">@x</option>
+                <option value="@x" id="@x">@x</option>
             }
         </select>
         <span asp-validation-for="ExpiryYear" class="text-danger"></span>
@@ -92,12 +92,12 @@
 
     <div class="form-group">
         <label asp-for="SecurityCode" class="control-label"></label>
-        <input type="password" asp-for="SecurityCode" class="form-control" />
-        <span asp-validation-for="SecurityCode" class="text-danger"></span>
+        <input type="password" asp-for="SecurityCode" class="form-control" id="securityCodeId" />
+        <span asp-validation-for="SecurityCode" class="text-danger" id="securityCodeError"></span>
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Add Card" class="btn btn-primary" />
+        <input type="submit" value="Add Card" class="btn btn-primary" id="btnCard" />
     </div>
 </form>
 

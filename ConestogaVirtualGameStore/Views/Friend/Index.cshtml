@@ -8,8 +8,8 @@
 <form asp-action="Index" asp-controller="Friend" method="GET">
     <input type="hidden" name="ise" value="t"/>
     <p>
-        Find Friend: <input type="text" name="search" value="@Model.SearchString" />
-        <input type="submit" value="Search" />
+        Find Friend: <input type="text" name="search" value="@Model.SearchString" id="searchBox" />
+        <input type="submit" value="Search" id="searchBtn" />
     </p>
 </form>
 @if(Model.Users.Count == 0){
@@ -41,7 +41,7 @@ else{
                             {
                                 <form asp-action="AddFriend">
                                     <input type="hidden" name="userId" value="@item.Id" />
-                                    <input type="submit" value="Add Friend" class="btn btn-primary" />
+                                    <input type="submit" value="Add Friend" class="btn btn-primary" id="add_@item.UserName" />
                                 </form>
                                 @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
                             }
@@ -74,7 +74,7 @@ else{
                     <td>
                         <form asp-action="DeleteFriend">
                             <input type="hidden" name="friendId" value="@item.Id" />
-                            <input type="submit" value="Unfriend" class="btn btn-danger" />
+                            <input type="submit" value="Unfriend" class="btn btn-danger" id="friend_@item.UserName" />
                         </form>
                     </td>
                 </tr>
@@ -104,12 +104,12 @@ else{
                         <td>
                             <form asp-action="AcceptFriend" style="display:inline;">
                                 <input type="hidden" name="requesterId" value="@item.Id" />
-                                <input type="submit" value="Accept Friend" class="btn btn-primary" />
+                                <input type="submit" value="Accept Friend" class="btn btn-primary" id="accept_@item.UserName" />
                             </form>
                             @*  <a asp-action="AcceptFriend" asp-route-RequesterId="@item.Id" asp-route-UserId="@Model.UserId" class="btn btn-primary">Accept Friend</a> *@
                             <form asp-action="DeclineFriend" style="display:inline;">
                                 <input type="hidden" name="requesterId" value="@item.Id" />
-                                <input type="submit" value="Decline" class="btn btn-danger" />
+                                <input type="submit" value="Decline" class="btn btn-danger" id="decline_@item.UserName" />
                             </form>
                             @* <a asp-action="DeclineFriend" asp-route-RequesterId="@item.Id" asp-route-UserId="@Model.UserId" class="btn btn-danger">Decline</a> *@
                         </td>
@@ -141,7 +141,7 @@ else{
                     <td>
                             <form asp-action="CancelRequest">
                                 <input type="hidden" name="friendId" value="@item.Id" />
-                                <div><input type="submit" value="Cancel Request" class="btn btn-danger" /></div>
+                                <div><input type="submit" value="Cancel Request" class="btn btn-danger" id="cancel_@item.UserName" /></div>
                             </form>
                             @* <a asp-action="CancelRequest" asp-route-UserId="@Model.UserId" asp-route-FriendId="@item.Id" class="btn btn-danger">Cancel Request</a> *@
                     </td>
