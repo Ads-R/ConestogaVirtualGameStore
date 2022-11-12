@@ -26,28 +26,27 @@
 </div>
 
 <div class="container">
-    
-            <form asp-action="EditReview" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <input type="hidden" asp-for="UserId" />
-                <input type="hidden" asp-for="GameId" />
-                <div class="form-group">
-                    <label asp-for="ReviewText" class="control-label"></label>
-                    <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
-                    <span asp-validation-for="ReviewText" class="text-danger"></span>
-                </div>
+
+    <form asp-action="EditReview" method="post" style="display:inline">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="GameId" />
+        <div class="form-group">
+            <label asp-for="ReviewText" class="control-label"></label>
+            <textarea asp-for="ReviewText" rows="6" cols="100" class="form-control"></textarea>
+            <span asp-validation-for="ReviewText" class="text-danger"></span>
+        </div>
 
         <input type="submit" value="Save Changes" id="btnSave" class="btn btn-primary" />
-             
-            </form>
-           <div style="line-height:3.5px"><br /></div>
-   
-            <form  asp-action="DeleteReview">
-                <input type="hidden" asp-for="UserId" />
-                <input type="hidden" asp-for="GameId" />
+
+    </form>
+
+    <form asp-action="DeleteReview" style="display:inline">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="GameId" />
         <input type="submit" value="Delete" id="btnDelete" class="btn btn-danger" />
-                <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl" class="btn btn-secondary">Back to Game Details</a>
-            </form>
+        <a asp-controller="Home" asp-action="GameDetails" asp-route-id="@ViewBag.EditBackUrl" class="btn btn-secondary">Back to Game Details</a>
+    </form>
     
 </div>
 

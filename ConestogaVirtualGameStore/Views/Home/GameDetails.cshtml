@@ -90,12 +90,13 @@
 
 </div>
 <br />
+<div class="container px-5">
 @if (SignInManager.IsSignedIn(User)){
     <span class="text-white bg-danger">@Html.Raw(TempData["RateModelError"])</span>
     if (ViewBag.HasExistingRating)
     {
         <div>
-            <h4>Rate Game</h4>
+            <h2>Rate Game</h2>
             <form asp-controller="Rating" asp-action="ChangeRating" method="post">
                 <input type="hidden" asp-for="Game.Id" />
                 <div class="RatingScore">
@@ -117,7 +118,7 @@
     }
     else{
         <div>
-            <h4>Rate Game</h4>
+            <h2>Rate Game</h2>
             <form asp-controller="Rating" asp-action="RateGame" method="post">
                 <input type="hidden" asp-for="Game.Id" />
                 <div class="RatingScore">
@@ -138,6 +139,7 @@
         <hr />
     }
 }
+</div>
 <br />
 
 <div class="container px-5">
