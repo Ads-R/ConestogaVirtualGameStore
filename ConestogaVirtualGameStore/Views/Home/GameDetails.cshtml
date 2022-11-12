@@ -147,8 +147,9 @@
                     <figure style="vertical-align: top;display: inline-block">
                         <img class="img-profile rounded-circle float-left" style="width:25px;height:25px"
                          src="~/panel-theme/img/undraw_profile.svg">
-                        <span style="display:block">@Html.DisplayFor(modelItem => i.User.UserName)</span>
+                        
                     </figure>
+                    <span style="display:block">@Html.DisplayFor(modelItem => i.User.UserName)</span>
                 </div>
                 <div class="col-sm-11">
                     <p><i>@Html.DisplayNameFor(modelItem => i.DateTime) @Html.DisplayFor(modelItem => i.DateTime)</i></p>
@@ -156,8 +157,11 @@
                 </div>
             </div>
         </div>
+       <br />
     }
+    
 </div>
+
 
 <script>
     var gameRating = "@Html.Raw(Model.GameRatingScore)";
