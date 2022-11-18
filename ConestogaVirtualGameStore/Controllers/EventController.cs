@@ -60,12 +60,18 @@ namespace ConestogaVirtualGameStore.Controllers
                 {
                     ModelState.AddModelError(nameof(eventModel.EventStartDate), "Start Date must not be in the past or present");
                 }
-                if (eventModel.EventEndDate <= eventModel.EventStartDate)
+                if (eventModel.EventEndDate < eventModel.EventStartDate)
                 {
                     ModelState.AddModelError(nameof(eventModel.EventEndDate), "End Date must not be earlier than the Start Date");
                 }
                 if (ModelState.IsValid)
                 {
+                    if (eventModel.EventEndDate == eventModel.EventStartDate)
+                    {
+                        eventModel.EventEndDate = eventModel.EventEndDate.AddHours(23);
+                        eventModel.EventEndDate = eventModel.EventEndDate.AddMinutes(59);
+                        eventModel.EventEndDate = eventModel.EventEndDate.AddSeconds(59);
+                    }
                     _context.Add(eventModel);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "Event added successfully";
@@ -116,7 +122,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 {
                     ModelState.AddModelError(nameof(eventModel.EventStartDate), "Cannot change the Start Date once the event has begun");
                 }
-                if (eventModel.EventEndDate <= eventModel.EventStartDate)
+                if (eventModel.EventEndDate < eventModel.EventStartDate)
                 {
                     ModelState.AddModelError(nameof(eventModel.EventEndDate), "End Date must not be earlier than the Start Date");
                 }
@@ -130,6 +136,12 @@ namespace ConestogaVirtualGameStore.Controllers
                     eventData.EventName = eventModel.EventName;
                     eventData.EventStartDate = eventModel.EventStartDate;
                     eventData.EventEndDate = eventModel.EventEndDate;
+                    if (eventModel.EventEndDate == eventModel.EventStartDate)
+                    {
+                        eventData.EventEndDate = eventData.EventEndDate.AddHours(23);
+                        eventData.EventEndDate = eventData.EventEndDate.AddMinutes(59);
+                        eventData.EventEndDate = eventData.EventEndDate.AddSeconds(59);
+                    }
                     eventData.EventDescription = eventModel.EventDescription;
                     _context.Update(eventData);
                     await _context.SaveChangesAsync();
