@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Wish\" />
     <Folder Include="wwwroot\Images\GameCovers\" />
   </ItemGroup>
 

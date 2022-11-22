@@ -15,5 +15,7 @@ namespace ConestogaVirtualGameStore.Models
         public ICollection<FriendModel> UserFriend { get; set; }
         public ICollection<FriendModel> Friend { get; set; }
 
+        public ICollection<WishListModel> Wish { get; set; }
+
     }
 }

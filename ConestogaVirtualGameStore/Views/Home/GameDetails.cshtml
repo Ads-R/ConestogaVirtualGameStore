@@ -1,6 +1,7 @@
 ﻿@model ConestogaVirtualGameStore.Models.ViewModels.GamesReviewsRatingsViewModel
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
+@inject ApplicationUser user
 @{
     ViewData["Title"] = "Game Details";
 }
@@ -85,6 +86,12 @@
             }
         }
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <form asp-action="AddWishList">
+                <input type="hidden" name="userId" value="@user.UserName" />
+            <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" />
+            </form>
+            @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
+        
     </div>
 
 

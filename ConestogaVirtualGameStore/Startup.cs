@@ -63,6 +63,7 @@ namespace ConestogaVirtualGameStore
 
             services.AddTransient<ICreditCardService, CreditCardService>();
             services.AddTransient<IFriendService, FriendService>();
+            services.AddTransient<IWish, Wish>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

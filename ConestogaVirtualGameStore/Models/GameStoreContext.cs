@@ -154,6 +154,25 @@ namespace ConestogaVirtualGameStore.Models
                 .Property(x => x.Platform)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+
+            //Primary Key
+            builder.Entity<WishListModel>()
+                .HasKey(a => new { a.UserId, a.GameId });
+
+            // Many wishlist to 1 game relationship
+            builder.Entity<WishListModel>()
+                .HasOne<GameModel>(a => a.Game)
+                .WithMany(d => d.Wish)
+                .HasForeignKey(e => e.GameId)
+                .IsRequired();
+
+            // Many wishlist to 1 user
+            builder.Entity<WishListModel>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.Wish)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+
         }
 
         public DbSet<ProfileModel> Profiles { get; set; }
@@ -170,5 +189,7 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<ReviewModel> Reviews { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
         public DbSet<FriendModel> Friends { get; set; }
+        public DbSet<WishListModel> Wish { get; set; }
+
     }
 }
