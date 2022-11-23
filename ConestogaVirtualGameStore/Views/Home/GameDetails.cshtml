@@ -1,7 +1,7 @@
 ﻿@model ConestogaVirtualGameStore.Models.ViewModels.GamesReviewsRatingsViewModel
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
-@inject ApplicationUser user
+@*@inject ApplicationUser user*@
 @{
     ViewData["Title"] = "Game Details";
 }
@@ -10,6 +10,7 @@
 <span class="text-white bg-success">@TempData["ReviewSuccess"]</span>
 <span class="text-white bg-success" id="rateSuccess">@TempData["RateSuccess"]</span>
 <span class="text-white bg-danger">@TempData["RNotFound"]</span>
+<span class="text-white bg-success">@TempData["WishAdd"]</span>
 <br />
 
 <div class="container">
@@ -84,12 +85,24 @@
             {
                 <a asp-controller="Review" asp-action="CreateReview" asp-route-GameId="@Model.Game.Id" id="btnWriteReview" class=" btn btn-primary">Write a Review</a>
             }
+            if (!ViewBag.HasAddedGame)
+            {
+                <form asp-action="AddWishList" asp-controller="WishList">
+                    <input hidden name="GameId" value="@Model.Game.Id" />
+                    <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" />
+                </form>
+            }
+            else
+            {
+                <form asp-action="AddWishList" asp-controller="WishList">
+                    <input hidden name="GameId" value="@Model.Game.Id" />
+                    <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" disabled = "disabled" />
+                </form>
+            }
         }
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-            <form asp-action="AddWishList">
-                <input type="hidden" name="userId" value="@user.UserName" />
-            <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" />
-            </form>
+        
+
             @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
         
     </div>

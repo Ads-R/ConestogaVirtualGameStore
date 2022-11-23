@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Wish\**" />
     <Compile Remove="wwwroot\theme\**" />
+    <Content Remove="Views\Wish\**" />
     <Content Remove="wwwroot\theme\**" />
+    <EmbeddedResource Remove="Views\Wish\**" />
     <EmbeddedResource Remove="wwwroot\theme\**" />
+    <None Remove="Views\Wish\**" />
     <None Remove="wwwroot\theme\**" />
   </ItemGroup>
 
@@ -23,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Wish\" />
     <Folder Include="wwwroot\Images\GameCovers\" />
   </ItemGroup>
 

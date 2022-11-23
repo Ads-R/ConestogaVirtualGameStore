@@ -86,6 +86,7 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 ViewBag.HasExistingReview = _context.Reviews.Any(a => a.UserId == user.Id && a.GameId == id);
                 ViewBag.HasExistingRating = _context.Ratings.Any(b => b.UserId == user.Id && b .GameId == id);
+                ViewBag.HasAddedGame = _context.Wish.Any(c => c.UserId == user.Id && c.GameId == id);
                 RatingModel rating = _context.Ratings.FirstOrDefault(a => a.UserId == user.Id && a.GameId == gameModel.Id);
                 if(rating != null)
                 {

@@ -1,4 +1,5 @@
-﻿using ConestogaVirtualGameStore.Models;
+﻿using System.Threading.Tasks;
+using ConestogaVirtualGameStore.Models;
 using ConestogaVirtualGameStore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,9 +18,48 @@ namespace ConestogaVirtualGameStore.Controllers
             _wishService = wishService;
             userManager = uManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ApplicationUser user = await userManager.GetUserAsync(User);
+            var records = await _wishService.GetAllGames(user.Id);
+            return View(records);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddWishList(int GameId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ApplicationUser user = await userManager.GetUserAsync(User);
+                    _wishService.AddWishList(user.Id, GameId);
+                    TempData["WishAdd"] = "Game added to wish list";
+                }
+                return Redirect($"/Home/GameDetails/{GameId}");
+            }
+
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+        }
+        public async Task<IActionResult>DeleteWish(int wishId)
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                _wishService.RemoveWishList(user.Id, wishId);
+                TempData["WishSuccess"] = "Game removed successfully";
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                TempData["WishFail"] = "\"An error has occurred while trying to remove a game. Please try again later.\"";
+                return RedirectToAction("Index");
+            }
+
         }
     }
 }

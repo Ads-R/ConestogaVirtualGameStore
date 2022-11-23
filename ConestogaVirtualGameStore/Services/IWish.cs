@@ -6,8 +6,9 @@ namespace ConestogaVirtualGameStore.Services
 {
     public interface IWish
     {
-        void AddWishList(string userId, string gameId);
-        void RemoveWishList(string userId, string gameId);
+        void AddWishList(string userId, int gameId);
+        void RemoveWishList(string userId, int gameId);
+        void ShareToSocialMedia(IEnumerable<GameModel> games);
         Task<IEnumerable<GameModel>> GetAllGames(string userId);
     }
 }

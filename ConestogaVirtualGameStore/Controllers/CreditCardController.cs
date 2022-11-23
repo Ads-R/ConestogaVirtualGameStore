@@ -74,7 +74,7 @@ namespace ConestogaVirtualGameStore.Controllers
             }
             catch (Exception x)
             {
-                TempData["CCException"] = "An error has occurred while trying to delete credit card. Pleas try again later.";
+                TempData["CCException"] = "An error has occurred while trying to delete credit card. Please try again later.";
                 return RedirectToAction("PaymentMethod");
             }
         }
