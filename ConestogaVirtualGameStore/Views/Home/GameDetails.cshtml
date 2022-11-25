@@ -96,7 +96,7 @@
             {
                 <form asp-action="AddWishList" asp-controller="WishList">
                     <input hidden name="GameId" value="@Model.Game.Id" />
-                    <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" disabled = "disabled" />
+                    <input type="submit" value="Added to Wish List" class="btn btn-info" id="add_@Model.Game.Id" disabled = "disabled"   />
                 </form>
             }
         }
