@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ConestogaVirtualGameStore.Controllers
 {
     [Authorize]
-
     public class WishListController : Controller
     {
         private readonly IWish _wishService;
@@ -20,9 +19,22 @@ namespace ConestogaVirtualGameStore.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ApplicationUser user = await userManager.GetUserAsync(User);
-            var records = await _wishService.GetAllGames(user.Id);
-            return View(records);
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    var records = await _wishService.GetAllGames(user.Id);
+                    return View(records);
+                }
+                return NotFound();
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+
         }
         [HttpPost]
         public async Task<IActionResult> AddWishList(int GameId)
@@ -60,6 +72,22 @@ namespace ConestogaVirtualGameStore.Controllers
                 return RedirectToAction("Index");
             }
 
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetFriendWishList(string friendUserName)
+        {
+            try
+            {
+                var friendRecord = await _wishService.GetFriendGames(friendUserName);
+                return View("FriendWish",friendRecord);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            //var records = await _wishService.GetAllGames(friendUserName);
+            //return View("FriendWish");
         }
     }
 }

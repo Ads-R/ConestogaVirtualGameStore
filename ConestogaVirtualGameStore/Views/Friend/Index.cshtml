@@ -76,6 +76,10 @@ else{
                             <input type="hidden" name="friendId" value="@item.Id" />
                             <input type="submit" value="Unfriend" class="btn btn-danger" id="friend_@item.UserName" />
                         </form>
+                        <form asp-action="GetFriendWishList" asp-controller="WishList">
+                            <input type="hidden" name="friendUserId" value="@item.Id" />
+                            <input type="submit" value="View Wish List" class="btn btn-danger" id="friend_@item.UserName" />
+                        </form>
                     </td>
                 </tr>
             }

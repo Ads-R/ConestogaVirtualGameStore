@@ -48,6 +48,20 @@ namespace ConestogaVirtualGameStore.Services
             return wishList;
         }
 
+        public async Task<IEnumerable<GameModel>> GetFriendGames(string userName)
+        {
+            var id = await _context.Users.Where(b => b.UserName == userName).FirstOrDefaultAsync();
+            var records = await _context.Wish.Where(a => a.UserId == id.Id).ToListAsync();
+            List<GameModel> wishList = new List<GameModel>();
+            foreach (var item in records)
+            {
+                var games = _context.Games.Where(a => a.Id == item.GameId).FirstOrDefault();
+                wishList.Add(games);
+            }
+
+            return wishList;
+        }
+
         public void RemoveWishList(string userId, int gameId)
         {
             try

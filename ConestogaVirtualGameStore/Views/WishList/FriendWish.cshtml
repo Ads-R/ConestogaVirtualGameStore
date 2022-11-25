@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
-@{
+@*@{
     Layout = "_LayoutMemberPanel";
-}
-<span class="text-white bg-success" id="creditSuccess">@TempData["WishSuccess"]</span>
-<span class="text-white bg-danger">@TempData["WishFail"]</span>
+}*@
+@*<span class="text-white bg-success" id="creditSuccess">@TempData["WishSuccess"]</span>
+<span class="text-white bg-danger">@TempData["WishFail"]</span>*@
 
 <h1>Wish List</h1>
 <html>
@@ -12,9 +12,6 @@
     <title>Wish List</title>
 </head>
 <body>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v15.0" nonce="UxWR73aX"></script>
-<div class="fb-share-button" data-href="https://localhost:44311/WishList/GetFriendWishList/Test" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44311%2FWishList%2FGetFriendWishList%2FTest&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
     <table class="table">
         <thead>
             <tr>
@@ -43,12 +40,10 @@
                     <td>
                         @*@Html.DisplayFor(modelItem => item.EventEndDate)*@
                     </td>
-                    <td>
-                        <a asp-action="DeleteWish" asp-route-wishId="@item.Id" id="btnRemoveWish">Remove</a>
-                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </body>
 </html>
+
