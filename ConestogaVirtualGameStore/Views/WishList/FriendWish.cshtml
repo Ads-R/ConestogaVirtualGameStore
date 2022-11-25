@@ -1,17 +1,13 @@
 ﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
-@*@{
-    Layout = "_LayoutMemberPanel";
-}*@
-@*<span class="text-white bg-success" id="creditSuccess">@TempData["WishSuccess"]</span>
-<span class="text-white bg-danger">@TempData["WishFail"]</span>*@
 
-<h1>Wish List</h1>
+<h1>@TempData["FriendUserName"] Wish List</h1>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Wish List</title>
+    <title>@TempData["FriendUserName"] Wish List</title>
 </head>
 <body>
+    <a asp-action="Index" class="btn btn-secondary" asp-controller="Friend" method="GET">Back to Friend List</a>
     <table class="table">
         <thead>
             <tr>

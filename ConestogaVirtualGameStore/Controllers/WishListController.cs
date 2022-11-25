@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ConestogaVirtualGameStore.Models;
 using ConestogaVirtualGameStore.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -75,19 +76,28 @@ namespace ConestogaVirtualGameStore.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetFriendWishList(string friendUserName)
+        public async Task<IActionResult> GetFriendWishList(string friendUserId)
         {
             try
             {
-                var friendRecord = await _wishService.GetFriendGames(friendUserName);
-                return View("FriendWish",friendRecord);
+                var friendRecord = await _wishService.GetFriendGames(friendUserId);
+                TempData["FriendUserName"] = friendUserId;
+                if (!friendRecord.Equals(null) && friendRecord.Count() != 0)
+                {
+                    return View("FriendWish", friendRecord);
+                }
+                else
+                {
+                    TempData["None"] = friendUserId + " does not have any games in wish list";
+                    return RedirectToAction("Index","Friend");
+                }
+
+
             }
             catch (System.Exception)
             {
                 throw;
             }
-            //var records = await _wishService.GetAllGames(friendUserName);
-            //return View("FriendWish");
         }
     }
 }

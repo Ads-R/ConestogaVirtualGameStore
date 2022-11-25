@@ -4,6 +4,7 @@
 }
 
 <span class="text-white bg-danger">@TempData["FException"]</span>
+<span class="text-white bg-danger">@TempData["None"]</span>
 
 <form asp-action="Index" asp-controller="Friend" method="GET">
     <input type="hidden" name="ise" value="t"/>
@@ -72,15 +73,11 @@ else{
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        <!-- TODO: Button for View Wish List (WIP)-->
-                        <form asp-action="DeleteFriend">
-                            <input type="hidden" name="friendId" value="@item.Id" />
+                        <form asp-action="GetFriendWishList" asp-controller="WishList" method="GET">
+                            <input type="hidden" name="friendUserId" value="@item.UserName" />
                             <input type="submit" value="View Wish List" class="btn btn-info" id="friend_@item.UserName" />
                         </form>
-                        <form asp-action="GetFriendWishList" asp-controller="WishList">
-                            <input type="hidden" name="friendUserId" value="@item.Id" />
-                            <input type="submit" value="View Wish List" class="btn btn-danger" id="friend_@item.UserName" />
-                        </form>
+
                     </td>
                     <td>
                         <form asp-action="DeleteFriend">
