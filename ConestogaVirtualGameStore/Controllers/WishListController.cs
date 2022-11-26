@@ -18,6 +18,7 @@ namespace ConestogaVirtualGameStore.Controllers
             _wishService = wishService;
             userManager = uManager;
         }
+        [Authorize]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -27,6 +28,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 if (user != null)
                 {
                     var records = await _wishService.GetAllGames(user.Id);
+                    TempData["UserName"] = user.UserName;
                     return View(records);
                 }
                 return NotFound();
@@ -75,6 +77,9 @@ namespace ConestogaVirtualGameStore.Controllers
             }
 
         }
+
+        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetFriendWishList(string friendUserId)
         {
