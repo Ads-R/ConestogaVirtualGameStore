@@ -75,10 +75,5 @@ namespace ConestogaVirtualGameStore.Services
                 throw;
             }
         }
-
-        public void ShareToSocialMedia(IEnumerable<GameModel> games)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
