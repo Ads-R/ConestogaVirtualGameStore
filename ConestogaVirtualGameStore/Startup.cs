@@ -63,6 +63,8 @@ namespace ConestogaVirtualGameStore
 
             services.AddTransient<ICreditCardService, CreditCardService>();
             services.AddTransient<IFriendService, FriendService>();
+
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +85,8 @@ namespace ConestogaVirtualGameStore
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

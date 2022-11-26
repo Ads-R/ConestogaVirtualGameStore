@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -9,6 +10,15 @@
         {
             <li class="nav-item">
                 <a class="nav-link text-light" asp-controller="Profile" asp-action="Index" id="NavItemProfile" title="Manage">@User.Identity.Name's Profile</a>
+            </li>
+            <li class="nav-item">
+                @{
+                    string cartText = "Cart(0)";
+                    if(Context.Session.GetString("CartCount") != null){
+                        cartText = $"Cart({Context.Session.GetString("CartCount")})";
+                    }
+                }
+                <a class="nav-link text-light" asp-controller="Cart" asp-action="Index">@Html.Raw(cartText)</a>
             </li>
         }
         else

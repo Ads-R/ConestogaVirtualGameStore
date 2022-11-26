@@ -164,6 +164,7 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             try
             {
+                HttpContext.Session.Clear();
                 await signInManager.SignOutAsync();
             }
             catch (Exception x)

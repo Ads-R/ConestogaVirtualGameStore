@@ -86,6 +86,15 @@
         }
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
+        @if (SignInManager.IsSignedIn(User)){
+        @if (!User.IsInRole("admin")){
+            <br />
+            <div class="justify-content-around px-5">
+                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Physical" class="btn btn-success">Add a Physical Copy to Cart</a>
+                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Digital" class="btn btn-success">Add a Digital Copy to Cart</a>
+            </div>
+        }
+        }
 
 
 </div>
