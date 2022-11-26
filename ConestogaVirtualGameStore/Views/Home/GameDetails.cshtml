@@ -79,28 +79,28 @@
         {
             if (ViewBag.HasExistingReview)
             {
-                <a id="btnEditReview" asp-controller="Review" asp-action="EditReview" asp-route-GameId="@Model.Game.Id" class="btn btn-primary">Edit Review</a>
+                <a id="btnEditReview" asp-controller="Review" asp-action="EditReview" asp-route-GameId="@Model.Game.Id" class="btn btn-primary" style="float:left; margin-right:5px">Edit Review</a>
             }
             else
             {
-                <a asp-controller="Review" asp-action="CreateReview" asp-route-GameId="@Model.Game.Id" id="btnWriteReview" class=" btn btn-primary">Write a Review</a>
+                <a asp-controller="Review" asp-action="CreateReview" asp-route-GameId="@Model.Game.Id" id="btnWriteReview" class=" btn btn-primary" style="float:left; margin-right:5px">Write a Review</a>
             }
             if (!ViewBag.HasAddedGame)
             {
                 <form asp-action="AddWishList" asp-controller="WishList">
                     <input hidden name="GameId" value="@Model.Game.Id" />
-                    <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" />
+                    <input type="submit" value="Add To Wish List" class="btn btn-primary" id="add_@Model.Game.Id" style="float:left; margin-right:5px" />
                 </form>
             }
             else
             {
                 <form asp-action="AddWishList" asp-controller="WishList">
                     <input hidden name="GameId" value="@Model.Game.Id" />
-                    <input type="submit" value="Added to Wish List" class="btn btn-info" id="add_@Model.Game.Id" disabled = "disabled"   />
+                    <input type="submit" value="Added to Wish List" class="btn btn-info" id="add_@Model.Game.Id" disabled="disabled" style="float:left; margin-right:5px" />
                 </form>
             }
         }
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <a asp-action="Index" class="btn btn-secondary" style="float:left; margin-right:5px">Back to List</a>
         
 
             @* <a asp-action="AddFriend" asp-route-UserId="@item.Id" class="btn btn-primary">Add Friend</a> *@
@@ -109,6 +109,8 @@
 
 
 </div>
+<br />
+<br />
 <br />
 <div class="container px-5">
 @if (SignInManager.IsSignedIn(User)){
@@ -131,7 +133,7 @@
                     <input type="radio" asp-for="RatingScore" id="star1" value="1" />
                     <label for="star1" title="1" id="s1">1 star</label>
                 </div>
-                <button type="submit" class="btn btn-primary" id="btnRating">Save Changes</button>
+                <button type="submit" class="btn btn-warning" id="btnRating">Save Changes</button>
             </form>
         </div>
         <hr />
@@ -153,7 +155,7 @@
                     <input type="radio" asp-for="RatingScore" id="star1" value="1" />
                     <label for="star1" title="1" id="s1">1 star</label>
                 </div>
-                <button type="submit" class="btn btn-primary" id="btnRating">Submit</button>
+                <button type="submit" class="btn btn-warning" id="btnRating">Submit</button>
             </form>
         </div>
         <hr />
