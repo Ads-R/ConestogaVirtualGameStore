@@ -5,7 +5,7 @@ namespace ConestogaVirtualGameStore.Models
 {
     public class GameStoreContext : IdentityDbContext<ApplicationUser>
     {
-        public GameStoreContext(DbContextOptions<GameStoreContext> options): base(options)
+        public GameStoreContext(DbContextOptions<GameStoreContext> options) : base(options)
         {
         }
 
@@ -86,7 +86,7 @@ namespace ConestogaVirtualGameStore.Models
                 .HasForeignKey(e => e.ShipCity);
             //Review composite FK as PK
             builder.Entity<ReviewModel>()
-                .HasKey(a => new { a.UserId, a.GameId});
+                .HasKey(a => new { a.UserId, a.GameId });
             //Review Many to 1 relationship with User
             builder.Entity<ReviewModel>()
                 .HasOne<ApplicationUser>(a => a.User)
@@ -101,7 +101,7 @@ namespace ConestogaVirtualGameStore.Models
                 .IsRequired();
             //Rating composite FK as PK
             builder.Entity<RatingModel>()
-                .HasKey(a => new {a.UserId, a.GameId});
+                .HasKey(a => new { a.UserId, a.GameId });
             //Rating Many to 1 relationship with User
             builder.Entity<RatingModel>()
                 .HasOne<ApplicationUser>(a => a.User)
@@ -139,6 +139,19 @@ namespace ConestogaVirtualGameStore.Models
                 .HasForeignKey(b => b.FriendId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            //Orders Many to 1 relationship with User
+            builder.Entity<Orders>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.Orders)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+
+            //Orders Many to 1 relationship with Game
+            builder.Entity<Orders>()
+                .HasOne<GameModel>(a => a.Game)
+                .WithMany(d => d.Orders)
+                .HasForeignKey(e => e.GameId)
+                .IsRequired();
 
             builder.Entity<ProfileModel>()
                 .Property(x => x.Gender)
@@ -170,5 +183,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<ReviewModel> Reviews { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
         public DbSet<FriendModel> Friends { get; set; }
+        public DbSet<Orders> Orders { get; set; }
     }
 }

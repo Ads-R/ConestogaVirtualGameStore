@@ -85,15 +85,41 @@ namespace ConestogaVirtualGameStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult CheckOut(CartViewModel card)
+        public async Task<IActionResult> CheckOut(CartViewModel card)
         {
-            // Still Under Construction//
-            if (ModelState.IsValid)
+            try
             {
-                return RedirectToAction("Index","Home");
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in GetCart())
+                    {
+                        Orders orders = new Orders()
+                        {
+                            UserId = user.Id,
+                            GameId = item.Game.Id,
+                            Price = item.Game.RetailPrice,
+                            DateOfPurchase = DateTime.Now,
+                            IsPhysicalCopy = item.IsPhysicalCopy,
+                            IsProcessed = item.IsPhysicalCopy == false ? true : false
+                        };
+                        _context.Add(orders);
+                    }
+                    _context.SaveChanges();
+                    TempData["OrderSuccess"] = "Your order has been processed successfully, " +
+                        "please check your inventory for the purchased digital games";
+                    HttpContext.Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["CardNull"] = "Please select a credit card for payment";
+                return RedirectToAction("Index");
             }
-            TempData["CardNull"] = "Please select a credit card for payment";
-            return RedirectToAction("Index");
+            catch (Exception x)
+            {
+                TempData["OrderFailed"] = "An error while processing your order has occurred";
+                HttpContext.Session.Clear();
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private bool FindGameInCart(int id)
