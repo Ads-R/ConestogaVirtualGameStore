@@ -167,6 +167,24 @@ namespace ConestogaVirtualGameStore.Models
                 .Property(x => x.Platform)
                 .HasConversion<string>()
                 .HasMaxLength(20);
+
+            //EventParticipants Many to 1 relationship with User
+            builder.Entity<EventParticipantsModel>()
+                .HasOne<ApplicationUser>(a => a.User)
+                .WithMany(d => d.EventParticipants)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+
+            //EventParticipants Many to 1 relationship with Event
+            builder.Entity<EventParticipantsModel>()
+                .HasOne<EventModel>(a => a.Event)
+                .WithMany(d => d.EventParticipants)
+                .HasForeignKey(e => e.EventModelId)
+                .IsRequired();
+
+            //EventParticipants relationship
+            builder.Entity<EventParticipantsModel>()
+                .HasKey(a => new { a.UserId, a.EventModelId });
         }
 
         public DbSet<ProfileModel> Profiles { get; set; }
@@ -184,5 +202,6 @@ namespace ConestogaVirtualGameStore.Models
         public DbSet<RatingModel> Ratings { get; set; }
         public DbSet<FriendModel> Friends { get; set; }
         public DbSet<Orders> Orders { get; set; }
+        public DbSet<EventParticipantsModel> EventParticipants { get; set; }
     }
 }
