@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+@{
+    Layout = "_LayoutMemberPanel";
+}
+<span class="text-white bg-success" id="creditSuccess">@TempData["WishSuccess"]</span>
+<span class="text-white bg-danger">@TempData["WishFail"]</span>
+
+<h1>Wish List</h1>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Wish List</title>
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v15.0" nonce="UxWR73aX"></script>
+   <!-- NOTE: Change the remote ip address to the one shown on Conveyor when running-->  
+    <iframe src="https://www.facebook.com/plugins/share_button.php?href=https://192.168.1.18:45455/WishList/GetFriendWishList?friendUserId=@TempData["UserName"]&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RetailPrice)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                    </td>
+                    <td>
+                        <a asp-action="DeleteWish" asp-route-wishId="@item.Id" id="btnRemoveWish">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

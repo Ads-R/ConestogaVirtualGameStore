@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+
+<h1>@TempData["FriendUserName"] Wish List</h1>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@TempData["FriendUserName"] Wish List</title>
+</head>
+<body>
+    <a asp-action="Index" class="btn btn-secondary" asp-controller="Friend" method="GET">Back to Friend List</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RetailPrice)
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.EventEndDate)*@
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.EventEndDate)*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+

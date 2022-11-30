@@ -36,5 +36,7 @@ namespace ConestogaVirtualGameStore.Models
         public ICollection<RatingModel> Ratings { get; set; }
         public ICollection<Orders> Orders { get; set; }
 
+        public ICollection<WishListModel> Wish { get; set; }
+
     }
 }
