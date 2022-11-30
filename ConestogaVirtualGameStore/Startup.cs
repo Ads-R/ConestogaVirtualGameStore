@@ -64,6 +64,7 @@ namespace ConestogaVirtualGameStore
             services.AddTransient<ICreditCardService, CreditCardService>();
             services.AddTransient<IFriendService, FriendService>();
             services.AddTransient<IEventParticipants, EventParticipantsService>();
+            services.AddTransient<IDownloadService, DownloadService>();
 
             services.AddSession();
         }

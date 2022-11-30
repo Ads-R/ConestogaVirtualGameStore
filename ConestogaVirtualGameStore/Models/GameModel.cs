@@ -25,6 +25,7 @@ namespace ConestogaVirtualGameStore.Models
         public Genre Category { get; set; }
         public Platforms Platform { get; set; }
         public string ImageName { get; set; }
+        public string FileName { get; set; }
         [NotMapped]
         [DisplayName("Upload Game Image. Allowed file formats(jpg,jpeg,png)")]
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })]
