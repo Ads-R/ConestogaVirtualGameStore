@@ -25,6 +25,7 @@ namespace ConestogaVirtualGameStore.Models
         public Genre Category { get; set; }
         public Platforms Platform { get; set; }
         public string ImageName { get; set; }
+        public string FileName { get; set; }
         [NotMapped]
         [DisplayName("Upload Game Image. Allowed file formats(jpg,jpeg,png)")]
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })]
@@ -33,6 +34,7 @@ namespace ConestogaVirtualGameStore.Models
 
         public ICollection<ReviewModel> Reviews { get; set; }
         public ICollection<RatingModel> Ratings { get; set; }
+        public ICollection<Orders> Orders { get; set; }
 
         public ICollection<WishListModel> Wish { get; set; }
 

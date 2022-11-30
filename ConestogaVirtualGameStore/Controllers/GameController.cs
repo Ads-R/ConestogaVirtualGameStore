@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using ConestogaVirtualGameStore.Classes;
 
 namespace ConestogaVirtualGameStore.Controllers
 {
@@ -83,6 +85,11 @@ namespace ConestogaVirtualGameStore.Controllers
                     {
                         await gameModel.ImageFile.CopyToAsync(fileStream);
                     }
+
+                    string gameFile = gameModel.Title + DateTime.Now.ToString("yymmssfff") + ".txt";
+                    GenerateGameFile(gameFile, gameModel.Title, gameModel.YearReleased.ToString(), Enum.GetName(typeof(Platforms), gameModel.Platform), Enum.GetName(typeof(Genre), gameModel.Category));
+                    gameModel.FileName = gameFile;
+
                     _context.Add(gameModel);
                     await _context.SaveChangesAsync();
                     TempData["GSuccess"] = "Game added successfully";
@@ -192,6 +199,10 @@ namespace ConestogaVirtualGameStore.Controllers
                 {
                     var imageLocation = GetPath(gameModel.ImageName);
                     DeleteFile(imageLocation);
+
+                    string gameFilePath = Path.Combine(_hostEnvironment.WebRootPath + "/GameFiles/", gameModel.FileName);
+                    DeleteFile(gameFilePath);
+
                     _context.Games.Remove(gameModel);
                     await _context.SaveChangesAsync();
                     TempData["GSuccess"] = "Game deleted successfully";
@@ -241,6 +252,21 @@ namespace ConestogaVirtualGameStore.Controllers
             else
             {
                 return true;
+            }
+        }
+
+        public void GenerateGameFile(string fileName,string title, string year, string platform, string category)
+        {
+            string path = Path.Combine(_hostEnvironment.WebRootPath + "/GameFiles/", fileName);
+
+            using (FileStream fileStream = System.IO.File.Create(path))
+            {
+                string text = "Title: "+title + 
+                    Environment.NewLine + "Year Released: "+year +
+                    Environment.NewLine + "Platform: "+platform +
+                    Environment.NewLine + "Category: "+category;
+                byte[] fileContent = new UTF8Encoding(true).GetBytes(text);
+                fileStream.Write(fileContent, 0, fileContent.Length);
             }
         }
     }

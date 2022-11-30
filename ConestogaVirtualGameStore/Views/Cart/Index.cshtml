@@ -1,0 +1,46 @@
+﻿@model ConestogaVirtualGameStore.Models.ViewModels.CartViewModel
+@{
+    Layout = "_Layout";
+}
+<span class="text-white bg-danger">@TempData["CartItemDuplicate"]</span>
+<span class="text-white bg-danger">@TempData["CardNull"]</span>
+
+<html>
+    <body>
+        <h2>My Cart</h2>
+        <table class="table">
+            <tr>
+                <th>Game Title</th>
+                <th>Price</th>
+                <th>Type of Copy</th>
+            </tr>
+            @if(ViewBag.Cart != null){
+            @foreach (var item in ViewBag.Cart)
+            {
+                <tr>
+                    <td>@item.Game.Title</td>
+                    <td>@item.Game.RetailPrice.ToString("C")</td>
+                    <td>@Html.Raw(item.IsPhysicalCopy == true ? "Physical" : "Digital")</td>
+                    <td><a asp-controller="Cart" asp-action="RemoveItem" asp-route-id="@item.Game.Id" style="color:red;text-decoration:underline;" onmouseover="this.style.color='blue'" onmouseout="this.style.color='red'">Drop Item</a></td>
+                </tr>
+            }
+            }
+            <tr>
+                <td align="right" colspan="6">Total</td>
+            <td>@ViewBag.TotalCost.ToString("C")</td>
+            </tr>
+        </table>
+        <br />
+    @if(ViewBag.Cart != null && ViewBag.Cart.Count !=0){
+    <form asp-action="Checkout" asp-controller="Cart" method="post" style="display:inline;">
+        <select asp-for="CreditCard" asp-items="@(new SelectList(@ViewBag.CreditCards, "CreditCardModelId", "CreditCardNumber"))" class="form-control">
+            <option value="">Select a Credit Card for Payment</option>
+        </select>
+        <br />
+        <input type="submit" value="Checkout" class="btn btn-primary" />
+    </form>
+        }
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary" >Continue Shopping</a>
+
+</body>
+</html>

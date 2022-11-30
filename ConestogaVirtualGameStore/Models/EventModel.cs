@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ConestogaVirtualGameStore.Models
@@ -19,5 +20,7 @@ namespace ConestogaVirtualGameStore.Models
         [DisplayFormat(DataFormatString = "{0:dddd, MMMM d, yyyy}")]
         [Display(Name = "Event End Date")]
         public DateTime EventEndDate { get; set; }
+
+        public ICollection<EventParticipantsModel> EventParticipants { get; set; }
     }
 }

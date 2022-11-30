@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.EventParticipantsModel>
+@{
+    Layout = "_LayoutMemberPanel";
+}
+<span class="text-white bg-success" id="creditSuccess">@TempData["RESuccess"]</span>
+<span class="text-white bg-danger">@TempData["REException"]</span>
+<h2>Events Deregistration</h2>
+
+
+<p>
+    <a asp-action="Index">Show All Events Available For Registration</a>
+  
+</p>
+@foreach (var item in ViewBag.RegisteredEvents){
+
+    <div class="card">
+        <div class="card-header">
+            @item.EventName
+        </div>
+
+        <div class="card-body">
+            <p class="fs-5">@String.Format("{0:d}",item.EventStartDate) - @String.Format("{0:d}",item.EventEndDate)</p>
+            <p>@item.EventDescription</p>
+            <form asp-controller="EventParticipants" asp-action="DeregisterEvent" method="post">
+                <input type="hidden" name="EventId" value="@item.EventModelId" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+
+            </form>
+        </div>
+    </div>
+    <br/>
+}
+    
