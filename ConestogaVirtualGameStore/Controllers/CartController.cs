@@ -152,5 +152,44 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             return SessionHelper.GetSessionObject<List<CartItem>>(HttpContext.Session, "cart");
         }
+
+        /////////////////////////////////////////////////////////////////////////
+        ///
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> PendingPhysicalOrders()
+        {
+            var orders = await _context.Orders
+                .Where(a => a.IsPhysicalCopy == true && a.IsProcessed == false)
+                .Include(b => b.User)
+                .Include(c => c.Game)
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> ProcessOrder([FromForm] int orderId)
+        {
+            try
+            {
+                var order = await _context.Orders
+                        .Where(a => a.OrdersId == orderId)
+                        .Include(b => b.User)
+                        .Include(c => c.Game)
+                        .FirstOrDefaultAsync();
+
+                order.IsProcessed = true;
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+                TempData["OrderProcessed"] = $"The order of {order.Game.Title} by {order.User.UserName} has been processed successfully";
+                return RedirectToAction(nameof(PendingPhysicalOrders));
+            }
+            catch (Exception x)
+            {
+                TempData["ProcessException"] = "An error has occurred while updating the order status: " + x.Message;
+                return RedirectToAction(nameof(PendingPhysicalOrders));
+            }
+        }
     }
 }

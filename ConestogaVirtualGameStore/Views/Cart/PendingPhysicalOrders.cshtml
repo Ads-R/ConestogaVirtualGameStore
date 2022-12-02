@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.Orders>
+@{
+    Layout = "_LayoutAdminPanel";
+}
+
+<span class="text-white bg-success">@TempData["OrderProcessed"]</span>
+<br />
+
+<h1>Pending Physical Orders</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfPurchase)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Game.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfPurchase)
+                    </td>
+                    <td>
+                        <form asp-action="ProcessOrder">
+                            <input type="hidden" name="OrderId" value="@item.OrdersId" />
+                            <div><input type="submit" value="Order Processed" class="btn btn-info" /></div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
