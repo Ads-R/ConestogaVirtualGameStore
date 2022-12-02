@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_LayoutAdminPanel";
+}
+
+<html>
+<body>
+    <h2>Reports</h2>
+    <form asp-action="Index" asp-controller="Report" >
+        <p style="display:inline;">
+        Choose a Report Type: <select name="ReportType">
+        <option value="">Select Report</option>
+        <option value="GameList">Game List Report</option>
+    </select>
+        <input type="submit" value="Get Report" class="btn btn-primary" />
+    </p>
+    </form>
+</body>
+</html>

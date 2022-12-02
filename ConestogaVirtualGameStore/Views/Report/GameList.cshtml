@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+@{
+    Layout = "_LayoutAdminPanel";
+}
+
+<h2>Game List</h2>
+<form asp-action="Index" asp-controller="Report">
+    <p style="display:inline;">
+        Choose a Report Type:
+        <select name="ReportType">
+            <option value="">Select Report</option>
+            <option value="GameList">Game List Report</option>
+        </select>
+        <input type="submit" value="Get Report" class="btn btn-primary" />
+    </p>
+</form>
+
+<br />
+<a asp-action="DownloadGameListReport" style="color:green;">Download Report</a>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Game List</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearReleased)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RetailPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Platform)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.YearReleased)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Platform)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
