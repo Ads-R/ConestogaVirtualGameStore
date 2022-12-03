@@ -28,13 +28,13 @@ namespace ConestogaVirtualGameStore.Services
 
         public async Task<IEnumerable<GameModel>> GetOwnedGames(string userId)
         {
-            var games = await _context.Orders.Where(a => a.UserId == userId).Where(b => b.IsPhysicalCopy == false).Include(c => c.Game).ToListAsync();
-            List<GameModel> gameList = new List<GameModel>();
-            foreach (var i in games)
-            {
-                gameList.Add(i.Game);
-            }
-            return gameList;
+            var games = await _context.Orders.Where(a => a.UserId == userId).Where(b => b.IsPhysicalCopy == false).Select(d => d.Game).Distinct().ToListAsync();
+            //List<GameModel> gameList = new List<GameModel>();
+            //foreach (var i in games)
+            //{
+            //    gameList.Add(i.Game);
+            //}
+            return games;
         }
     }
 }

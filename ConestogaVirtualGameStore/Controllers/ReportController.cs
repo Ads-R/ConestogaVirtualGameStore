@@ -36,10 +36,10 @@ namespace ConestogaVirtualGameStore.Controllers
         {
             var report = await _reportService.GetAllGames();
             var builder = new StringBuilder();
-            builder.AppendLine("Id,Title,YearReleased,RetailPrice,Category,Platform");
+            builder.AppendLine("Title,YearReleased,RetailPrice,Category,Platform");
             foreach(var i in report)
             {
-                builder.AppendLine($"{i.Id},{i.Title},{i.YearReleased},{i.RetailPrice},{i.Category},{i.Platform}");
+                builder.AppendLine($"{i.Title},{i.YearReleased},{i.RetailPrice},{i.Category},{i.Platform}");
             }
             return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "GameListReport.csv");
         }
