@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.ApplicationUser>
+@{
+    Layout = "_LayoutAdminPanel";
+}
+<h2>Member Detail</h2>
+<form asp-action="Index" asp-controller="Report">
+    <p style="display:inline;">
+        Choose a Report Type:
+        <select name="ReportType">
+            <option value="">Select Report</option>
+            <option value="GameList">Game List Report</option>
+            <option value="GameDetail">Game Detail Report</option>
+            <option value="MemberList">Member List Report</option>
+            <option value="MemberDetail">Member Detail Report</option>
+            <option value="WishList">Wish List Report</option>
+            <option value="SalesList">Sales Report</option>
+        </select>
+        <input type="submit" value="Get Report" class="btn btn-primary" />
+    </p>
+</form>
+
+<br />
+<a asp-action="DownloadMemberDetailReport" style="color:green;">Download Report</a>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Member Detail</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    Member Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Profile.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.MailingAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.ShippingAddress)
+                </th>
+                <th>
+                    Favourate Category
+                </th>
+                <th>
+                    Favourate Plateform
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Profile.FirstName)  &nbsp; @Html.DisplayFor(modelItem => item.Profile.LastName)
+                    </td>
+                    <th>
+                        @Html.DisplayFor(model => item.Profile.Gender)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.Address.MailingAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.Address.ShippingAddress)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Preference.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Preference.Platform)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+

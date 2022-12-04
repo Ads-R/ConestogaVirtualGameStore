@@ -21,13 +21,13 @@
 </form>
 
 <br />
-<a asp-action="DownloadGameListReport" style="color:green;">Download Report</a>
+<a asp-action="DownloadGameDetailReport" style="color:green;">Download Report</a>
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Game List</title>
+    <title>Game Detail</title>
 </head>
 <body>
     <table class="table">
@@ -48,7 +48,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Platform)
                 </th>
-                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    Image
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +74,12 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Platform)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <img src="@("~/Images/GameCovers/"+@item.ImageName)" asp-append-version="true" width="100px" height="100px" />
                     </td>
                 </tr>
             }

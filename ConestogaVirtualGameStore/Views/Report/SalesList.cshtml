@@ -1,9 +1,8 @@
-﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.ViewModels.Sales>
 @{
     Layout = "_LayoutAdminPanel";
 }
-
-<h2>Game List</h2>
+<h2>Sales List</h2>
 <form asp-action="Index" asp-controller="Report">
     <p style="display:inline;">
         Choose a Report Type:
@@ -21,34 +20,26 @@
 </form>
 
 <br />
-<a asp-action="DownloadGameListReport" style="color:green;">Download Report</a>
-<!DOCTYPE html>
-
+<a asp-action="DownloadSalesListReport" style="color:green;">Download Report</a>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Game List</title>
+    <title>Sales List</title>
 </head>
 <body>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Title)
+                    @Html.DisplayNameFor(model => model.Month)
+                </th>
+                 <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.YearReleased)
+                    @Html.DisplayNameFor(model => model.TotalSales)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RetailPrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Platform)
-                </th>
-                <th></th>
+
             </tr>
         </thead>
         <tbody>
@@ -56,21 +47,30 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
+                        @Html.DisplayFor(modelItem => item.Month)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.YearReleased)
+                        @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                        @Html.DisplayFor(modelItem => item.TotalSales)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Platform)
-                    </td>
+
                 </tr>
+                @if(item.Month =="December"){
+                    <tr>
+                        <td>
+                           Grand Total
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GrandTotalQuantities)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.GrandTotalSales)
+                        </td>
+
+                    </tr>
+                }
             }
         </tbody>
     </table>

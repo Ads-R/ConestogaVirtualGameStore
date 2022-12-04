@@ -1,9 +1,8 @@
-﻿@model IEnumerable<ConestogaVirtualGameStore.Models.GameModel>
+﻿@model IEnumerable<ConestogaVirtualGameStore.Models.ApplicationUser>
 @{
     Layout = "_LayoutAdminPanel";
 }
-
-<h2>Game List</h2>
+<h2>Member List</h2>
 <form asp-action="Index" asp-controller="Report">
     <p style="display:inline;">
         Choose a Report Type:
@@ -21,34 +20,30 @@
 </form>
 
 <br />
-<a asp-action="DownloadGameListReport" style="color:green;">Download Report</a>
+<a asp-action="DownloadMemberListReport" style="color:green;">Download Report</a>
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Game List</title>
+    <title>Member List</title>
 </head>
 <body>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Title)
+                     @Html.DisplayNameFor(model => model.UserName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.YearReleased)
+                    Member Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RetailPrice)
+                    Favourate Category
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Category)
+                    Favourate Plateform
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Platform)
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -56,19 +51,16 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
+                        @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.YearReleased)
+                        @Html.DisplayFor(modelItem => item.Profile.FirstName)  &nbsp; @Html.DisplayFor(modelItem => item.Profile.LastName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                        @Html.DisplayFor(modelItem => item.Preference.Category)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Platform)
+                        @Html.DisplayFor(modelItem => item.Preference.Platform)
                     </td>
                 </tr>
             }
@@ -76,3 +68,6 @@
     </table>
 </body>
 </html>
+    
+
+
