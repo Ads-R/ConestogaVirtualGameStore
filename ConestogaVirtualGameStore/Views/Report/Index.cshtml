@@ -7,16 +7,16 @@
     <h2>Reports</h2>
     <form asp-action="Index" asp-controller="Report" >
         <p style="display:inline;">
-        Choose a Report Type: <select name="ReportType">
+        Choose a Report Type: <select name="ReportType" id="reportList">
         <option value="">Select Report</option>
-        <option value="GameList">Game List Report</option>
+        <option value="GameList" id="gameListReport">Game List Report</option>
         <option value="GameDetail">Game Detail Report</option>
         <option value="MemberList">Member List Report</option>
         <option value="MemberDetail">Member Detail Report</option>
         <option value="WishList">Wish List Report</option>
-        <option value="SalesList">Sales Report</option>
+        <option value="SalesList" id="salesReport">Sales Report</option>
     </select>
-        <input type="submit" value="Get Report" class="btn btn-primary" />
+        <input type="submit" value="Get Report" class="btn btn-primary" id="btnReport" />
     </p>
     </form>
 </body>

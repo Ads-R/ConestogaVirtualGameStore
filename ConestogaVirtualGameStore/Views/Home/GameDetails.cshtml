@@ -35,7 +35,7 @@
         <div class="col-sm-2 text-right font-weight-bold">
             @Html.DisplayNameFor(model => model.Game.Title)
         </div>
-        <div class="col-sm-10 px-0">
+        <div class="col-sm-10 px-0" id="gameTitleText">
             @Html.DisplayFor(model => model.Game.Title)
         </div>
     </div>
@@ -111,8 +111,8 @@
         @if (!User.IsInRole("admin")){
             <br />
             <div class="justify-content-around px-5">
-                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Physical" class="btn btn-success">Add a Physical Copy to Cart</a>
-                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Digital" class="btn btn-success">Add a Digital Copy to Cart</a>
+                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Physical" class="btn btn-success" id="physicalBtn" name="@Model.Game.Id">Add a Physical Copy to Cart</a>
+                <a asp-action="AddItem" asp-controller="Cart" asp-route-id="@Model.Game.Id" asp-route-type="Digital" class="btn btn-success" id="digitalBtn" name="@Model.Game.Id">Add a Digital Copy to Cart</a>
             </div>
         }
         }

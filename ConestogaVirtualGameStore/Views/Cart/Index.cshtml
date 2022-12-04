@@ -18,7 +18,7 @@
             @foreach (var item in ViewBag.Cart)
             {
                 <tr>
-                    <td>@item.Game.Title</td>
+                    <td id="cartGameTitle">@item.Game.Title</td>
                     <td>@item.Game.RetailPrice.ToString("C")</td>
                     <td>@Html.Raw(item.IsPhysicalCopy == true ? "Physical" : "Digital")</td>
                     <td><a asp-controller="Cart" asp-action="RemoveItem" asp-route-id="@item.Game.Id" style="color:red;text-decoration:underline;" onmouseover="this.style.color='blue'" onmouseout="this.style.color='red'">Drop Item</a></td>
@@ -37,7 +37,7 @@
             <option value="">Select a Credit Card for Payment</option>
         </select>
         <br />
-        <input type="submit" value="Checkout" class="btn btn-primary" />
+        <input type="submit" value="Checkout" class="btn btn-primary" id="checkoutBtn" />
     </form>
         }
     <a asp-action="Index" asp-controller="Home" class="btn btn-secondary" >Continue Shopping</a>

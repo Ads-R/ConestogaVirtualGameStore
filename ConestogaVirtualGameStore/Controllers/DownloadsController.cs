@@ -30,8 +30,7 @@ namespace ConestogaVirtualGameStore.Controllers
             return View(games);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DownloadGame([FromForm] int gameId)
+        public async Task<IActionResult> DownloadGame(int gameId)
         {
             try
             {

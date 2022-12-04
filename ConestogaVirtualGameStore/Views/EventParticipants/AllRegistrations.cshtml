@@ -2,7 +2,7 @@
 @{
     Layout = "_LayoutMemberPanel";
 }
-<span class="text-white bg-success" id="creditSuccess">@TempData["RESuccess"]</span>
+<span class="text-white bg-success">@TempData["RESuccess"]</span>
 <span class="text-white bg-danger">@TempData["REException"]</span>
 <h2>Events Deregistration</h2>
 
@@ -14,7 +14,7 @@
 @foreach (var item in ViewBag.RegisteredEvents){
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header" id="@item.EventModelId">
             @item.EventName
         </div>
 
@@ -23,7 +23,7 @@
             <p>@item.EventDescription</p>
             <form asp-controller="EventParticipants" asp-action="DeregisterEvent" method="post">
                 <input type="hidden" name="EventId" value="@item.EventModelId" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
+                <input type="submit" value="Delete" class="btn btn-danger" id="btnRemoveEvent" />
 
             </form>
         </div>
