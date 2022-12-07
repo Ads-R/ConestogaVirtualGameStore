@@ -109,14 +109,18 @@ namespace ConestogaVirtualGameStore.Controllers
             {
                 int wishCount = report.Where(b => b.GameId == i).Count();
                 string gameTitle = _context.Games.Where(c => c.Id == i).Select(d => d.Title).FirstOrDefault();
+                string gameImage = _context.Games.Where(c => c.Id == i).Select(d => d.ImageName).FirstOrDefault();
                 WishGameCount wishGame = new WishGameCount()
                 {
                     GameTitle = gameTitle,
+                    ImageName =gameImage,
                     Count = wishCount
                 };
                 games.Add(wishGame);
+                
             }
-            return View(games);
+            var gameCountDescending = from w in games orderby w.Count descending select w;
+            return View(gameCountDescending);
         }
         public async Task<IActionResult> DownloadWishListReport()
         {
@@ -134,9 +138,10 @@ namespace ConestogaVirtualGameStore.Controllers
                 };
                 games.Add(wishGame);
             }
+            var gameCountDescending = from w in games orderby w.Count descending select w;
             var builder = new StringBuilder();
             builder.AppendLine("Game Name,Number of Times Added to wish list");
-            foreach (var i in games)
+            foreach (var i in gameCountDescending)
             {
                 builder.AppendLine($"{i.GameTitle},{i.Count}");
             }
