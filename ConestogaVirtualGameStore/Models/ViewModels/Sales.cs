@@ -11,7 +11,5 @@ namespace ConestogaVirtualGameStore.Models.ViewModels
         [Display(Name = "Total Sales")]
         public double TotalSales { get; set; }
 
-        public int GrandTotalQuantities { get; set; }
-        public double GrandTotalSales { get; set; }
     }
 }

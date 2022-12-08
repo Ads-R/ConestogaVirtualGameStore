@@ -63,10 +63,10 @@
                            Grand Total
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.GrandTotalQuantities)
+                            @Model.Sum(i => i.Quantity)
                         </td>
                         <td>
-                            $@Html.DisplayFor(modelItem => item.GrandTotalSales)
+                            $ @Model.Sum(i => i.TotalSales)
                         </td>
 
                     </tr>

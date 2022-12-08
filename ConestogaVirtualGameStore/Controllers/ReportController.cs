@@ -159,8 +159,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 var quantity = report.Where(a => a.DateOfPurchase.Month == i).Count();
                 var total = report.Where(a => a.DateOfPurchase.Month == i).Select(b => b.Price).Sum();
                 var m = "";
-                var grandTotalQuantities = +quantity;
-                var grandTotalSales = +total;
+              
                 if (i == 1)
                 {
                     m = "January";
@@ -213,9 +212,8 @@ namespace ConestogaVirtualGameStore.Controllers
                 {
                     Month = m,
                     Quantity = quantity,
-                    TotalSales = total,
-                    GrandTotalQuantities = grandTotalQuantities,
-                    GrandTotalSales = grandTotalSales,
+                    TotalSales = total
+                  
                 };
                 gameSales.Add(sales);
             }
@@ -231,8 +229,7 @@ namespace ConestogaVirtualGameStore.Controllers
                 var quantity = report.Where(a => a.DateOfPurchase.Month == i).Count();
                 var total = report.Where(a => a.DateOfPurchase.Month == i).Select(b => b.Price).Sum();
                 var m = "";
-                var grandTotalQuantities = +quantity;
-                var grandTotalSales = +total;
+                
                 if (i == 1)
                 {
                     m = "January";
@@ -286,8 +283,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     Month = m,
                     Quantity = quantity,
                     TotalSales = total,
-                    GrandTotalQuantities = grandTotalQuantities,
-                    GrandTotalSales = grandTotalSales,
+               
                 };
                 gameSales.Add(sales);
             }
