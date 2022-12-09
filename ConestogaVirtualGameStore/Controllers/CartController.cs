@@ -106,10 +106,8 @@ namespace ConestogaVirtualGameStore.Controllers
                         _context.Add(orders);
                     }
                     _context.SaveChanges();
-                    TempData["OrderSuccess"] = "Your order has been processed successfully, " +
-                        "please check your inventory for the purchased digital games";
-                    HttpContext.Session.Clear();
-                    return RedirectToAction("Index", "Home");
+                    HttpContext.Session.SetString("OrderDone", "done");
+                    return RedirectToAction("OrderReceipt");
                 }
                 TempData["CardNull"] = "Please select a credit card for payment";
                 return RedirectToAction("Index");
@@ -120,6 +118,28 @@ namespace ConestogaVirtualGameStore.Controllers
                 HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public async Task<IActionResult> OrderReceipt()
+        {
+            if (HttpContext.Session.GetString("OrderDone") != null)
+            {
+                if (HttpContext.Session.GetString("OrderDone") == "done")
+                {
+                    ApplicationUser user = await userManager.GetUserAsync(User);
+                    var orders = GetCart();
+                    OrderViewModel ordVM = new OrderViewModel()
+                    {
+                        UserName = user.UserName,
+                        DateOfPurchase = DateTime.Now,
+                        Items = orders,
+                        Total = orders.Sum(a => a.Game.RetailPrice)
+                    };
+                    HttpContext.Session.Clear();
+                    return View(ordVM);
+                }
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private bool FindGameInCart(int id)

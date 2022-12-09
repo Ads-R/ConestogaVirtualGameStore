@@ -1,0 +1,54 @@
+﻿@model ConestogaVirtualGameStore.Models.ViewModels.OrderViewModel
+@{
+}
+
+<html>
+<body>
+    <h5>You have purchased the following items</h5>
+    <table class="table">
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                <td><img src="@("~/Images/GameCovers/"+item.Game.ImageName)" asp-append-version="true" alt="Card image" width="50px" height="50px"></td>
+                    <td>@item.Game.Title</td>
+                    <td>@item.Game.RetailPrice.ToString("C")</td>
+                    <td>@Html.Raw(item.IsPhysicalCopy == true ? "Physical" : "Digital")</td>
+                </tr>
+            }
+    </table>
+    <br />
+    <div>
+        <div class="row">
+            <div class="col">
+                <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.Raw("Account Name: ")
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.Raw(Model.UserName)
+                </dd>
+                    <dt class="col-sm-4">
+                        @Html.Raw("Date of Purchase: ")
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.Raw(Model.DateOfPurchase)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.Raw("Total: ")
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.Raw(Model.Total.ToString("C"))
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to List</a>
+</body>
+</html>
