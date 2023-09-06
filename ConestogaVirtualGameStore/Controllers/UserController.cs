@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Runtime.Loader;
@@ -23,15 +24,17 @@ namespace ConestogaVirtualGameStore.Controllers
         private readonly IPasswordHasher<ApplicationUser> passwordHasher;
         private readonly IPasswordValidator<ApplicationUser> passwordValidator;
         private readonly GameStoreContext _context;
+        private readonly IConfiguration configuration;
 
         public UserController(UserManager<ApplicationUser> uManager, SignInManager<ApplicationUser> sManager,
-            IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV, GameStoreContext context)
+            IPasswordHasher<ApplicationUser> passwordHash, IPasswordValidator<ApplicationUser> passwordV, GameStoreContext context, IConfiguration config)
         {
             userManager = uManager;
             signInManager = sManager;
             passwordHasher = passwordHash;
             passwordValidator = passwordV;
             _context = context;
+            configuration = config;
         }
         [AllowAnonymous]
         public IActionResult Register()
@@ -61,7 +64,7 @@ namespace ConestogaVirtualGameStore.Controllers
                     {
                         var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
                         var confirmationLink = Url.Action("ConfirmedEmail", "Email", new { token, email = user.Email }, Request.Scheme);
-                        EmailSender emailSender = new EmailSender();
+                        EmailSender emailSender = new EmailSender(configuration);
                         bool emailResponse = emailSender.SendEmail(user.Email, confirmationLink);
 
                         if (emailResponse)
@@ -243,7 +246,7 @@ namespace ConestogaVirtualGameStore.Controllers
                         IdentityResult result = await userManager.UpdateAsync(user);
                         if (result.Succeeded)
                         {
-                            EmailSender emailSender = new EmailSender();
+                            EmailSender emailSender = new EmailSender(configuration);
                             bool emailResponse = emailSender.SendEmailPassword(user.Email, newPassword);
                             if (!emailResponse)
                             {
